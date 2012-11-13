@@ -1,12 +1,14 @@
-package fr.ybo.tv.server.modele;
+package fr.ybo.model;
 
-import com.google.appengine.api.datastore.Blob;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
 
-import javax.persistence.Id;
 import java.io.Serializable;
+import java.sql.Blob;
 import java.util.Date;
 
-public class Programme implements Serializable  {
+@Entity
+public class Programme implements Serializable {
 
     @Id
     private Long id;

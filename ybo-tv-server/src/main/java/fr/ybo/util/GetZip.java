@@ -1,4 +1,5 @@
-package fr.ybo.tv.server.util;
+package fr.ybo.util;
+
 
 import com.google.common.io.ByteStreams;
 
@@ -20,5 +21,4 @@ public class GetZip {
         stream.close();
         return retour;
     }
-
 }
