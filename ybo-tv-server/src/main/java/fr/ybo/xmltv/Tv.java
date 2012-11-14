@@ -1,6 +1,7 @@
 
 package fr.ybo.xmltv;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -21,7 +22,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "programme"
 })
 @XmlRootElement(name = "tv")
-public class Tv {
+public class Tv implements Serializable {
 
     @XmlAttribute
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)

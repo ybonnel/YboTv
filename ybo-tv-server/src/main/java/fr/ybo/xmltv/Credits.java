@@ -1,6 +1,7 @@
 
 package fr.ybo.xmltv;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -26,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
     "guest"
 })
 @XmlRootElement(name = "credits")
-public class Credits {
+public class Credits implements Serializable {
 
     protected List<Director> director;
     protected List<Actor> actor;

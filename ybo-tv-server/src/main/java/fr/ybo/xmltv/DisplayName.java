@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.NormalizedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.Serializable;
 
 
 /**
@@ -19,7 +20,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "value"
 })
 @XmlRootElement(name = "display-name")
-public class DisplayName {
+public class DisplayName implements Serializable {
 
     @XmlAttribute
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)

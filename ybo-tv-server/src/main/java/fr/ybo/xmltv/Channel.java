@@ -1,6 +1,7 @@
 
 package fr.ybo.xmltv;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -23,7 +24,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "url"
 })
 @XmlRootElement(name = "channel")
-public class Channel {
+public class Channel implements Serializable {
 
     @XmlAttribute(required = true)
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)

@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
+import java.io.Serializable;
 
 
 /**
@@ -16,7 +17,7 @@ import javax.xml.bind.annotation.XmlValue;
     "value"
 })
 @XmlRootElement(name = "guest")
-public class Guest {
+public class Guest implements Serializable {
 
     @XmlValue
     protected String value;

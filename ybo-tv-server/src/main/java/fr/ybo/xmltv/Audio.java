@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
 
 /**
@@ -16,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
     "stereo"
 })
 @XmlRootElement(name = "audio")
-public class Audio {
+public class Audio implements Serializable {
 
     protected String present;
     protected String stereo;

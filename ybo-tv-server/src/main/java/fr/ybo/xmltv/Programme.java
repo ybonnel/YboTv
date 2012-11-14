@@ -1,6 +1,7 @@
 
 package fr.ybo.xmltv;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -43,7 +44,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "review"
 })
 @XmlRootElement(name = "programme")
-public class Programme {
+public class Programme implements Serializable {
 
     @XmlAttribute(required = true)
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)

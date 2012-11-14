@@ -1,6 +1,7 @@
 
 package fr.ybo.xmltv;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -22,7 +23,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "icon"
 })
 @XmlRootElement(name = "star-rating")
-public class StarRating {
+public class StarRating implements Serializable {
 
     @XmlAttribute
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)

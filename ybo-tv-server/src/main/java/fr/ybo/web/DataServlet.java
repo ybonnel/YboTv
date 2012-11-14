@@ -1,8 +1,10 @@
 package fr.ybo.web;
 
 import com.google.gson.Gson;
+import fr.ybo.model.Programme;
 import fr.ybo.util.GetZip;
 import fr.ybo.xmltv.Tv;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,25 +16,20 @@ import java.io.IOException;
 
 public class DataServlet extends HttpServlet {
 
+    private static Logger logger = Logger.getLogger(HttpServlet.class);
+
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("utf-8");
 
-        Tv tv = null;
-
-        try {
-            JAXBContext jc = JAXBContext.newInstance("fr.ybo.xmltv");
-            Unmarshaller um = jc.createUnmarshaller();
-
-            tv = (Tv) um.unmarshal(GetZip.getFile());
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-
-
         Gson gson = new Gson();
-        resp.getWriter().println(gson.toJson(tv));
+        try {
+            resp.getWriter().println(gson.toJson(Programme.getCurrentTv().getChannel()));
+        } catch (JAXBException e) {
+            resp.setStatus(500);
+            logger.error("Error durring getTv", e);
+        }
     }
 
 }

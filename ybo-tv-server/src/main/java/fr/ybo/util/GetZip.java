@@ -4,6 +4,7 @@ package fr.ybo.util;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import com.google.common.io.InputSupplier;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.net.URL;
@@ -13,9 +14,14 @@ import java.util.zip.ZipInputStream;
 
 public class GetZip {
 
+    private static Logger logger = Logger.getLogger(GetZip.class);
+
     public final static String FILE_URL = "http://kevinpato.free.fr/xmltv/download/tnt.zip";
 
     public static Reader getFile() throws IOException {
+
+        logger.info("getFile");
+
         StringBuilder contentXml = new StringBuilder();
         /*URL url = new URL(FILE_URL);
         URLConnection connection = url.openConnection();
