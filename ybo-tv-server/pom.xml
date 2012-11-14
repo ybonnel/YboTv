@@ -127,6 +127,9 @@
 
 	<build>
 		<plugins>
+
+
+
 			<!--
 				This plug-in "enhances" your domain model objects (i.e. makes them
 				persistent for datanucleus)
