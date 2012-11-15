@@ -8,4 +8,6 @@ public abstract class DataService<T> {
 
     public abstract T getById(String id) throws ServiceExeption;
 
+    public abstract List<T> getBy(String parameterName, String parameterValue) throws ServiceExeption;
+
 }

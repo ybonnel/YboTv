@@ -1,9 +1,19 @@
 
 package fr.ybo.xmltv;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -45,6 +55,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 })
 @XmlRootElement(name = "programme")
 public class Programme implements Serializable {
+    @JsonProperty("id")
+    public String getId() {
+        return start + channel;
+    }
 
     @XmlAttribute(required = true)
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
@@ -69,23 +83,30 @@ public class Programme implements Serializable {
     protected String channel;
     @XmlAttribute
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
+    @JsonIgnore
     protected String clumpidx;
     @XmlElement(required = true)
+    @JsonIgnore
     protected List<Title> title;
     @XmlElement(name = "sub-title")
+    @JsonIgnore
     protected List<SubTitle> subTitle;
+    @JsonIgnore
     protected List<Desc> desc;
     protected Credits credits;
     protected String date;
+    @JsonIgnore
     protected List<Category> category;
     protected Language language;
     @XmlElement(name = "orig-language")
     protected OrigLanguage origLanguage;
     protected Length length;
+    @JsonIgnore
     protected List<Icon> icon;
     protected List<Url> url;
     protected List<Country> country;
     @XmlElement(name = "episode-num")
+    @JsonIgnore
     protected List<EpisodeNum> episodeNum;
     protected Video video;
     protected Audio audio;
@@ -97,10 +118,98 @@ public class Programme implements Serializable {
     @XmlElement(name = "new")
     protected New _new;
     protected List<Subtitles> subtitles;
+    @JsonIgnore
     protected List<Rating> rating;
     @XmlElement(name = "star-rating")
+    @JsonIgnore
     protected List<StarRating> starRating;
     protected List<Review> review;
+
+
+    @JsonProperty("title")
+    public String getOneTitle() {
+        return Optional.fromNullable(Iterables.getFirst(getTitle(), null)).transform(new Function<Title, String>() {
+            @Override
+            public String apply(Title input) {
+                return input.getvalue();
+            }
+        }).orNull();
+    }
+
+    @JsonProperty("subTitle")
+    public String getOneSubTitle() {
+        return Optional.fromNullable(Iterables.getFirst(getSubTitle(), null)).transform(new Function<SubTitle, String>() {
+            @Override
+            public String apply(SubTitle input) {
+                return input.getvalue();
+            }
+        }).orNull();
+    }
+
+    @JsonProperty("desc")
+    public String getOneDesc() {
+        return Optional.fromNullable(Iterables.getFirst(getDesc(), null)).transform(new Function<Desc, String>() {
+            @Override
+            public String apply(Desc input) {
+                return input.getvalue();
+            }
+        }).orNull();
+    }
+
+    @JsonProperty("categories")
+    public List<String> getCategories() {
+        return Lists.transform(getCategory(), new Function<Category, String>() {
+            @Override
+            public String apply(Category input) {
+                return input.getvalue();
+            }
+        });
+    }
+
+    @JsonProperty("ratings")
+    public Map<String, String> getRatings() {
+        return Maps.transformValues(Maps.uniqueIndex(getRating(), new Function<Rating, String>() {
+            @Override
+            public String apply(Rating input) {
+                return input.getSystem();
+            }
+        }), new Function<Rating, String>() {
+            @Override
+            public String apply(Rating input) {
+                return input.getValue();
+            }
+        });
+    }
+
+    @JsonProperty("episodeNum")
+    public String getOneEpisodeNum() {
+        return Optional.fromNullable(Iterables.getFirst(getEpisodeNum(), null)).transform(new Function<EpisodeNum, String>() {
+            @Override
+            public String apply(EpisodeNum input) {
+                return input.getvalue();
+            }
+        }).orNull();
+    }
+
+    @JsonProperty("starRating")
+    public String getOneStarRating() {
+        return Optional.fromNullable(Iterables.getFirst(getStarRating(), null)).transform(new Function<StarRating, String>() {
+            @Override
+            public String apply(StarRating input) {
+                return input.getValue();
+            }
+        }).orNull();
+    }
+
+    @JsonProperty("icon")
+    public String getOneIcon() {
+        return Optional.fromNullable(Iterables.getFirst(getIcon(), null)).transform(new Function<Icon, String>() {
+            @Override
+            public String apply(Icon input) {
+                return input.getSrc();
+            }
+        }).orNull();
+    }
 
     /**
      * Gets the value of the start property.

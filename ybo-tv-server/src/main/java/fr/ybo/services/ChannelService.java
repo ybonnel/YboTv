@@ -2,11 +2,12 @@ package fr.ybo.services;
 
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
-import fr.ybo.model.Programme;
+import fr.ybo.util.GetTv;
 import fr.ybo.xmltv.Channel;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 public class ChannelService extends DataService<Channel> {
@@ -18,7 +19,7 @@ public class ChannelService extends DataService<Channel> {
             MemcacheService service = MemcacheServiceFactory.getMemcacheService();
             List<Channel> channels = (List<Channel>) service.get("channels");
             if (channels == null) {
-                channels = Programme.getCurrentTv().getChannel();
+                channels = GetTv.getCurrentTv().getChannel();
                 service.put("channels", channels);
             }
             return channels;
@@ -47,6 +48,14 @@ public class ChannelService extends DataService<Channel> {
             }
         }
         return channel;
+    }
+
+    @Override
+    public List<Channel> getBy(String parameterName, String parameterValue) throws ServiceExeption {
+        if ("id".equals(parameterName)) {
+            return Collections.singletonList(getById(parameterValue));
+        }
+        return null;
     }
 
 

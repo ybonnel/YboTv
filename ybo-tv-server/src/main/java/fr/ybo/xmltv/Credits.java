@@ -1,6 +1,11 @@
 
 package fr.ybo.xmltv;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +34,137 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "credits")
 public class Credits implements Serializable {
 
+    @JsonIgnore
     protected List<Director> director;
+
+    @JsonProperty("directors")
+    public List<String> getDirectors() {
+        return Lists.transform(getDirector(), new Function<Director, String>() {
+            @Override
+            public String apply(Director input) {
+                return input.getvalue();
+            }
+        });
+    }
+
+
+    @JsonIgnore
     protected List<Actor> actor;
+
+    @JsonProperty("actors")
+    public List<String> getActors() {
+        return Lists.transform(getActor(), new Function<Actor, String>() {
+            @Override
+            public String apply(Actor input) {
+                return input.getvalue();
+            }
+        });
+    }
+
+    @JsonIgnore
     protected List<Writer> writer;
+
+    @JsonProperty("writers")
+    public List<String> getWriters() {
+        return Lists.transform(getWriter(), new Function<Writer, String>() {
+            @Override
+            public String apply(Writer input) {
+                return input.getvalue();
+            }
+        });
+    }
+
+    @JsonIgnore
     protected List<Adapter> adapter;
+
+    @JsonProperty("adapters")
+    public List<String> getAdapters() {
+        return Lists.transform(getAdapter(), new Function<Adapter, String>() {
+            @Override
+            public String apply(Adapter input) {
+                return input.getvalue();
+            }
+        });
+    }
+
+    @JsonIgnore
     protected List<Producer> producer;
+
+    @JsonProperty("producers")
+    public List<String> getProducers() {
+        return Lists.transform(getProducer(), new Function<Producer, String>() {
+            @Override
+            public String apply(Producer input) {
+                return input.getvalue();
+            }
+        });
+    }
+
+    @JsonIgnore
     protected List<Composer> composer;
+
+    @JsonProperty("composers")
+    public List<String> getComposers() {
+        return Lists.transform(getComposer(), new Function<Composer, String>() {
+            @Override
+            public String apply(Composer input) {
+                return input.getvalue();
+            }
+        });
+    }
+
+    @JsonIgnore
     protected List<Editor> editor;
+
+    @JsonProperty("editors")
+    public List<String> getEditors() {
+        return Lists.transform(getEditor(), new Function<Editor, String>() {
+            @Override
+            public String apply(Editor input) {
+                return input.getvalue();
+            }
+        });
+    }
+
+    @JsonIgnore
     protected List<Presenter> presenter;
+
+    @JsonProperty("presenters")
+    public List<String> getPresenters() {
+        return Lists.transform(getPresenter(), new Function<Presenter, String>() {
+            @Override
+            public String apply(Presenter input) {
+                return input.getvalue();
+            }
+        });
+    }
+
+    @JsonIgnore
     protected List<Commentator> commentator;
+
+    @JsonProperty("commentators")
+    public List<String> getCommentators() {
+        return Lists.transform(getCommentator(), new Function<Commentator, String>() {
+            @Override
+            public String apply(Commentator input) {
+                return input.getvalue();
+            }
+        });
+    }
+
+    @JsonIgnore
     protected List<Guest> guest;
+
+    @JsonProperty("guests")
+    public List<String> getGuests() {
+        return Lists.transform(getGuest(), new Function<Guest, String>() {
+            @Override
+            public String apply(Guest input) {
+                return input.getvalue();
+            }
+        });
+    }
+
 
     /**
      * Gets the value of the director property.

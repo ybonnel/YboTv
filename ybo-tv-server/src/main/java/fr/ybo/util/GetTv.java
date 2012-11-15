@@ -1,4 +1,4 @@
-package fr.ybo.model;
+package fr.ybo.util;
 
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class Programme {
+public class GetTv {
 
     public static Tv getCurrentTv() throws JAXBException, IOException {
         String currentDate = new SimpleDateFormat("yyyyMMdd").format(new Date());

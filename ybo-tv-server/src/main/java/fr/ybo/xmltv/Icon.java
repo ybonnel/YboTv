@@ -23,7 +23,6 @@ public class Icon implements Serializable {
 
     @XmlAttribute(required = true)
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
-    @JsonIgnore
     protected String src;
     @XmlAttribute
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)

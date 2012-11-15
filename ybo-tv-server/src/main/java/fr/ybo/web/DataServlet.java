@@ -1,6 +1,10 @@
 package fr.ybo.web;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
@@ -13,7 +17,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 public class DataServlet extends HttpServlet {
 
@@ -42,9 +48,21 @@ public class DataServlet extends HttpServlet {
         String[] parameters = Iterables.toArray(Iterables.skip(paths, 1), String.class);
 
         try {
-            Object result = ServiceFactory.callService(service, req.getMethod(), parameters);
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(resp.getWriter(), result);
+            String currentDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+            String memCacheId = "jsonResponse/" + currentDate + req.getPathInfo();
+            MemcacheService cacheService = MemcacheServiceFactory.getMemcacheService();
+
+            String jsonResponse = (String) cacheService.get(memCacheId);
+
+            if (jsonResponse == null) {
+                Object result = ServiceFactory.callService(service, req.getMethod(), parameters);
+
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+                jsonResponse = mapper.writeValueAsString(result);
+                cacheService.put(memCacheId, jsonResponse);
+            }
+            resp.getWriter().print(jsonResponse);
         } catch (ServiceExeption serviceExeption) {
             resp.setStatus(500);
             logger.error("Error during for service '" + nomService + "', method(" + req.getMethod() + "), parameters = " + Arrays.toString(parameters), serviceExeption);
