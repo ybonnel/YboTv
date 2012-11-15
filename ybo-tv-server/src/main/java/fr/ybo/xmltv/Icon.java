@@ -1,6 +1,8 @@
 
 package fr.ybo.xmltv;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -21,12 +23,15 @@ public class Icon implements Serializable {
 
     @XmlAttribute(required = true)
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
+    @JsonIgnore
     protected String src;
     @XmlAttribute
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
+    @JsonIgnore
     protected String width;
     @XmlAttribute
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
+    @JsonIgnore
     protected String height;
 
     /**

@@ -1,18 +1,19 @@
 package fr.ybo.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
-import fr.ybo.model.Programme;
-import fr.ybo.util.GetZip;
-import fr.ybo.xmltv.Tv;
+import fr.ybo.services.DataService;
+import fr.ybo.services.ServiceExeption;
+import fr.ybo.services.ServiceFactory;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class DataServlet extends HttpServlet {
 
@@ -23,12 +24,31 @@ public class DataServlet extends HttpServlet {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("utf-8");
 
-        Gson gson = new Gson();
+        Iterable<String> paths = Splitter.on('/').trimResults().omitEmptyStrings().split(req.getPathInfo());
+
+        String nomService = Iterables.getFirst(paths, null);
+
+        if (nomService == null) {
+            resp.setStatus(404);
+            return;
+        }
+
+        DataService service = ServiceFactory.getService(nomService);
+        if (service == null) {
+            resp.setStatus(404);
+            return;
+        }
+
+        String[] parameters = Iterables.toArray(Iterables.skip(paths, 1), String.class);
+
         try {
-            resp.getWriter().println(gson.toJson(Programme.getCurrentTv().getChannel()));
-        } catch (JAXBException e) {
+            Object result = ServiceFactory.callService(service, req.getMethod(), parameters);
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.writeValue(resp.getWriter(), result);
+        } catch (ServiceExeption serviceExeption) {
             resp.setStatus(500);
-            logger.error("Error durring getTv", e);
+            logger.error("Error during for service '" + nomService + "', method(" + req.getMethod() + "), parameters = " + Arrays.toString(parameters), serviceExeption);
+            resp.getWriter().println(serviceExeption);
         }
     }
 

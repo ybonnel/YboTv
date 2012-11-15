@@ -1,6 +1,12 @@
 
 package fr.ybo.xmltv;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +36,30 @@ public class Channel implements Serializable {
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
     protected String id;
     @XmlElement(name = "display-name", required = true)
+    @JsonIgnore
     protected List<DisplayName> displayName;
+    @JsonIgnore
     protected List<Icon> icon;
+    @JsonIgnore
     protected List<Url> url;
+
+    @JsonProperty("icon")
+    public String getOneIcon() {
+        Icon oneIcon = Iterables.getFirst(icon, null);
+        if (oneIcon == null) {
+            return null;
+        }
+        return Iterables.getLast(Splitter.on("/").trimResults().omitEmptyStrings().split(oneIcon.getSrc()), null);
+    }
+
+    @JsonProperty("displayName")
+    public String getOneDisplayName() {
+        DisplayName oneDisplayName = Iterables.getFirst(displayName, null);
+        if (oneDisplayName == null) {
+            return null;
+        }
+        return oneDisplayName.getvalue();
+    }
 
     /**
      * Gets the value of the id property.
