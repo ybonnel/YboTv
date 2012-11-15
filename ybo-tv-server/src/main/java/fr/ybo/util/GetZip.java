@@ -16,7 +16,7 @@ public class GetZip {
 
     private static Logger logger = Logger.getLogger(GetZip.class);
 
-    public final static String FILE_URL = "http://kevinpato.free.fr/xmltv/download/tnt.zip";
+    public final static String FILE_URL = "http://kevinpato.free.fr/xmltv/download/tnt_lite.zip";
 
     public static Reader getFile() throws IOException {
 
