@@ -58,5 +58,10 @@ public class ChannelService extends DataService<Channel> {
         return null;
     }
 
+    @Override
+    public List<Channel> get(String... parameters) throws ServiceExeption {
+        return null;
+    }
+
 
 }

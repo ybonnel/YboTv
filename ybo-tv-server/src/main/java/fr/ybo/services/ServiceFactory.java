@@ -24,6 +24,8 @@ public class ServiceFactory {
                 return service.getById(parameters[0]);
             } else if (parameters.length == 2) {
                 return service.getBy(parameters[0], parameters[1]);
+            } else {
+                return service.get(parameters);
             }
         }
 

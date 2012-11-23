@@ -10,4 +10,6 @@ public abstract class DataService<T> {
 
     public abstract List<T> getBy(String parameterName, String parameterValue) throws ServiceExeption;
 
+    public abstract List<T> get(String...parameters) throws ServiceExeption;
+
 }
