@@ -8,8 +8,11 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import java.io.Serializable;
+import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -43,13 +46,31 @@ public class Channel implements Serializable {
     @JsonIgnore
     protected List<Url> url;
 
+    private final static Map<String, String> mapChaineLogo = new HashMap<String, String>(){{
+        put("1", "tf1.gif");
+        put("2", "france2.gif");
+        put("3", "france3.gif");
+        put("4", "canal.gif");
+        put("5", "france5.gif");
+        put("6", "m6.gif");
+        put("7", "arte.gif");
+        put("8", "d8.png");
+        put("9", "w9.gif");
+        put("10", "tmc.gif");
+        put("11", "nt1.png");
+        put("12", "nrj12.gif");
+        put("13", "lachaineparlementaire.gif");
+        put("14", "france4.gif");
+        put("15", "bfmtv.gif");
+        put("16", "itele.gif");
+        put("17", "d17.png");
+        put("18", "gulli.gif");
+        put("999", "franceo.gif");
+    }};
+
     @JsonProperty("icon")
     public String getOneIcon() {
-        Icon oneIcon = Iterables.getFirst(icon, null);
-        if (oneIcon == null) {
-            return null;
-        }
-        return Iterables.getLast(Splitter.on("/").trimResults().omitEmptyStrings().split(oneIcon.getSrc()), null);
+        return mapChaineLogo.get(id);
     }
 
     @JsonProperty("displayName")
