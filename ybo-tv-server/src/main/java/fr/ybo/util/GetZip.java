@@ -22,11 +22,6 @@ public class GetZip {
 
         logger.info("getFile");
 
-        StringBuilder contentXml = new StringBuilder();
-        /*URL url = new URL(FILE_URL);
-        URLConnection connection = url.openConnection();
-        connection.connect();
-        InputStream stream = connection.getInputStream();*/
 
         InputSupplier<InputStream> supplier = new InputSupplier<InputStream>() {
 
@@ -35,7 +30,14 @@ public class GetZip {
             @Override
             public InputStream getInput() throws IOException {
                 if (stream == null) {
-                    stream = new ZipInputStream(GetZip.class.getResourceAsStream("/tnt_lite.zip"));
+                    URL url = new URL(FILE_URL);
+                    URLConnection connection = url.openConnection();
+                    connection.setConnectTimeout(0);
+                    connection.setReadTimeout(0);
+                    connection.connect();
+                    InputStream inputStream = connection.getInputStream();
+                    //InputStream inputStream = GetZip.class.getResourceAsStream("/tnt_lite.zip");
+                    stream = new ZipInputStream(inputStream);
                     stream.getNextEntry();
                 }
                 return stream;
@@ -44,6 +46,7 @@ public class GetZip {
 
         InputSupplier<InputStreamReader> reader = CharStreams.newReaderSupplier(supplier, Charset.forName("utf-8"));
 
+        StringBuilder contentXml = new StringBuilder();
         for (String line : CharStreams.readLines(reader)) {
             if (!line.startsWith("<!DOCTYPE")) {
                 contentXml.append(line);
