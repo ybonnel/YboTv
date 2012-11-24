@@ -46,6 +46,16 @@ public class Channel implements Serializable {
     @JsonIgnore
     protected List<Url> url;
 
+    private transient Programme currentProgramme;
+
+    public Programme getCurrentProgramme() {
+        return currentProgramme;
+    }
+
+    public void setCurrentProgramme(Programme currentProgramme) {
+        this.currentProgramme = currentProgramme;
+    }
+
     private final static Map<String, String> mapChaineLogo = new HashMap<String, String>(){{
         put("1", "tf1.gif");
         put("2", "france2.gif");

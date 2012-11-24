@@ -1,5 +1,22 @@
 <div class="row">
-	<div class="span12">
-        <img ng-repeat="channel in channels" ng-src="/logos/{{channel.icon}}" title="{{channel.displayName}}"/>
-	</div>
+<div class="media well span10 offset1" ng-repeat="channel in channels">
+    <a class="pull-left span2" href="#">
+        <img class="media-object" ng-src="/logos/{{channel.icon}}" title="{{channel.displayName}}" />
+    </a>
+    <div class="media-body {{{true:'span5', false:'span7'}[channel.currentProgramme.icon != undefined]}}">
+        <h4 class="media-heading">{{channel.currentProgramme.title}}</h4>
+        <h6 class="media-heading">{{channel.currentProgramme.start.substring(8,10)}}:{{channel.currentProgramme.start.substring(10,12)}} -
+            {{channel.currentProgramme.stop.substring(8,10)}}:{{channel.currentProgramme.stop.substring(10,12)}}
+        </h6>
+
+
+        <!-- Nested media object -->
+        <div class="media">
+            {{channel.currentProgramme.desc}}
+        </div>
+    </div>
+    <a class="pull-right span2" href="#">
+    <img class="media-object" ng-src="{{channel.currentProgramme.icon}}"/>
+        </a>
 </div>
+    </div>
