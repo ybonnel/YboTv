@@ -27,29 +27,38 @@ public class GetTv {
         TvForMemCache tv = null;
 
         if (channels == null) {
-            JAXBContext jc = JAXBContext.newInstance("fr.ybo.xmltv");
-            Unmarshaller um = jc.createUnmarshaller();
-
-            tv = TvForMemCache.fromTv((Tv) um.unmarshal(GetZip.getFile()));
-
-            service.put(currentDate + "_channels", tv.getChannel());
-            Map<String, List<ProgrammeForMemCache>> mapProgrammes = new HashMap<String, List<ProgrammeForMemCache>>();
-            for (ProgrammeForMemCache programme : tv.getProgramme()) {
-                if (!mapProgrammes.containsKey(programme.getChannel())) {
-                    mapProgrammes.put(programme.getChannel(), new ArrayList<ProgrammeForMemCache>());
-                }
-                mapProgrammes.get(programme.getChannel()).add(programme);
-            }
-
-            for (Map.Entry<String, List<ProgrammeForMemCache>> entry : mapProgrammes.entrySet()) {
-                service.put(currentDate + "_programmes_" + entry.getKey(), entry.getValue());
-            }
+            tv = getTvFromNetwork(currentDate, service);
         } else {
             tv = new TvForMemCache();
             tv.getChannel().addAll(channels);
             for (ChannelForMemCache channel : tv.getChannel()) {
-                tv.getProgramme().addAll((List<ProgrammeForMemCache>) service.get(currentDate + "_programmes_" + channel.getId()));
+                List<ProgrammeForMemCache> programmeForMemCaches = (List<ProgrammeForMemCache>) service.get(currentDate + "_programmes_" + channel.getId());
+                if (programmeForMemCaches == null || programmeForMemCaches.isEmpty()) {
+                    return getTvFromNetwork(currentDate, service);
+                }
+                tv.getProgramme().addAll(programmeForMemCaches);
             }
+        }
+        return tv;
+    }
+
+    private static TvForMemCache getTvFromNetwork(String currentDate, MemcacheService service) throws JAXBException, IOException {
+        TvForMemCache tv;JAXBContext jc = JAXBContext.newInstance("fr.ybo.xmltv");
+        Unmarshaller um = jc.createUnmarshaller();
+
+        tv = TvForMemCache.fromTv((Tv) um.unmarshal(GetZip.getFile()));
+
+        service.put(currentDate + "_channels", tv.getChannel());
+        Map<String, List<ProgrammeForMemCache>> mapProgrammes = new HashMap<String, List<ProgrammeForMemCache>>();
+        for (ProgrammeForMemCache programme : tv.getProgramme()) {
+            if (!mapProgrammes.containsKey(programme.getChannel())) {
+                mapProgrammes.put(programme.getChannel(), new ArrayList<ProgrammeForMemCache>());
+            }
+            mapProgrammes.get(programme.getChannel()).add(programme);
+        }
+
+        for (Map.Entry<String, List<ProgrammeForMemCache>> entry : mapProgrammes.entrySet()) {
+            service.put(currentDate + "_programmes_" + entry.getKey(), entry.getValue());
         }
         return tv;
     }

@@ -59,14 +59,16 @@ public class ChannelService extends DataService<ChannelForMemCache> {
         if ("id".equals(parameterName)) {
             return Collections.singletonList(getById(parameterValue));
         } else if ("date".equals(parameterName)) {
+            List<ChannelForMemCache> returnChannels = new ArrayList<ChannelForMemCache>();
             List<ChannelForMemCache> channels = getAll();
             for (ChannelForMemCache channel : channels) {
                 List<ProgrammeForMemCache> programmes = ((ProgrammeService) ServiceFactory.getService("programme")).get("channel", channel.getId(), "date", parameterValue);
                 if (!programmes.isEmpty()) {
                     channel.setCurrentProgramme(programmes.get(0));
                 }
+                returnChannels.add(channel);
             }
-            return channels;
+            return returnChannels;
         }
         return null;
     }
