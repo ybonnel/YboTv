@@ -1,6 +1,6 @@
 <div class="row">
 <div class="media well span10 offset1" ng-repeat="channel in channels">
-    <a class="pull-left span2" href="#">
+    <a class="pull-left span2">
         <img class="media-object" ng-src="/logos/{{channel.icon}}" title="{{channel.displayName}}" />
     </a>
     <div class="media-body {{{true:'span5', false:'span7'}[channel.currentProgramme.icon != undefined]}}">
@@ -15,7 +15,7 @@
             {{channel.currentProgramme.desc}}
         </div>
     </div>
-    <a class="pull-right span2 {{{true:'', false:'hidden'}[channel.currentProgramme.icon != undefined]}}" href="#">
+    <a class="pull-right span2 {{{true:'', false:'hidden'}[channel.currentProgramme.icon != undefined]}}">
     <img class="media-object" ng-src="{{channel.currentProgramme.icon}}"/>
         </a>
 </div>

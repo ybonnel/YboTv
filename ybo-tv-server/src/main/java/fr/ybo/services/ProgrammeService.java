@@ -85,6 +85,29 @@ public class ProgrammeService extends DataService<ProgrammeForMemCache> {
             }
         });
     }
+    private List<ProgrammeForMemCache> getByChannelAndBetweenDate(String channel, final String dateDebut, final String dateFin) throws ServiceExeption {
+        List<ProgrammeForMemCache> programmes = new ArrayList<ProgrammeForMemCache>(Collections2.filter(getByChannel(channel), new Predicate<ProgrammeForMemCache>() {
+            @Override
+            public boolean apply(ProgrammeForMemCache programme) {
+                return (dateDebut.compareTo(programme.getStart()) <= 0
+                        && dateFin.compareTo(programme.getStart()) >= 0) ||
+                        (dateDebut.compareTo(programme.getStop()) <= 0
+                                && dateFin.compareTo(programme.getStop()) >= 0);
+
+
+
+            }
+        }));
+        Collections.sort(programmes, new Comparator<ProgrammeForMemCache>() {
+            @Override
+            public int compare(ProgrammeForMemCache programmeForMemCache, ProgrammeForMemCache programmeForMemCache1) {
+                return programmeForMemCache.getStart().compareTo(programmeForMemCache1.getStart());
+            }
+        });
+        return programmes;
+    }
+
+
 
     @Override
     public List<ProgrammeForMemCache> get(String... parameters) throws ServiceExeption {
@@ -93,6 +116,12 @@ public class ProgrammeService extends DataService<ProgrammeForMemCache> {
                     && "date".equals(parameters[2])) {
                 return new ArrayList<ProgrammeForMemCache>(getByChannelAndDate(parameters[1], parameters[3]));
 
+            }
+        } else if (parameters.length == 6) {
+            if ("channel".equals(parameters[0])
+                    && "datedebut".equals(parameters[2])
+                    && "datefin".equals(parameters[4])) {
+                return new ArrayList<ProgrammeForMemCache>(getByChannelAndBetweenDate(parameters[1], parameters[3], parameters[5]));
             }
         }
         return null;

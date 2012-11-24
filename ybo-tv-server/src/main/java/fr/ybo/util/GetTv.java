@@ -17,26 +17,31 @@ import java.util.*;
 
 public class GetTv {
 
+    private final static Object jeton = new Object();
+
     @SuppressWarnings("unchecked")
     public static TvForMemCache getCurrentTv() throws JAXBException, IOException {
         String currentDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
 
         MemcacheService service = MemcacheServiceFactory.getMemcacheService();
 
-        List<ChannelForMemCache> channels = (List<ChannelForMemCache>) service.get(currentDate + "_channels");
         TvForMemCache tv = null;
+        synchronized (jeton) {
 
-        if (channels == null) {
-            tv = getTvFromNetwork(currentDate, service);
-        } else {
-            tv = new TvForMemCache();
-            tv.getChannel().addAll(channels);
-            for (ChannelForMemCache channel : tv.getChannel()) {
-                List<ProgrammeForMemCache> programmeForMemCaches = (List<ProgrammeForMemCache>) service.get(currentDate + "_programmes_" + channel.getId());
-                if (programmeForMemCaches == null || programmeForMemCaches.isEmpty()) {
-                    return getTvFromNetwork(currentDate, service);
+        List<ChannelForMemCache> channels = (List<ChannelForMemCache>) service.get(currentDate + "_channels");
+
+            if (channels == null) {
+                tv = getTvFromNetwork(currentDate, service);
+            } else {
+                tv = new TvForMemCache();
+                tv.getChannel().addAll(channels);
+                for (ChannelForMemCache channel : tv.getChannel()) {
+                    List<ProgrammeForMemCache> programmeForMemCaches = (List<ProgrammeForMemCache>) service.get(currentDate + "_programmes_" + channel.getId());
+                    if (programmeForMemCaches == null || programmeForMemCaches.isEmpty()) {
+                        return getTvFromNetwork(currentDate, service);
+                    }
+                    tv.getProgramme().addAll(programmeForMemCaches);
                 }
-                tv.getProgramme().addAll(programmeForMemCaches);
             }
         }
         return tv;
