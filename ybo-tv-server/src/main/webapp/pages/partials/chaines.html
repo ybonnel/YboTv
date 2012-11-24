@@ -15,7 +15,7 @@
             {{channel.currentProgramme.desc}}
         </div>
     </div>
-    <a class="pull-right span2" href="#">
+    <a class="pull-right span2 {{{true:'', false:'hidden'}[channel.currentProgramme.icon != undefined]}}" href="#">
     <img class="media-object" ng-src="{{channel.currentProgramme.icon}}"/>
         </a>
 </div>
