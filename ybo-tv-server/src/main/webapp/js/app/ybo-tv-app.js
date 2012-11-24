@@ -8,7 +8,9 @@ var App = angular.module('YboTv', ['YboTv.services']);
 // Configuration des routes
 App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/now', {templateUrl: '/pages/partials/chaines.html', controller: NowController});
-    $routeProvider.when('/cesoir', {templateUrl: '/pages/partials/chaines.html', controller: CeSoirController});
+    $routeProvider.when('/primetime', {templateUrl: '/pages/partials/chaines.html', controller: PrimeTimeController});
+    $routeProvider.when('/partie2', {templateUrl: '/pages/partials/chaines.html', controller: Partie2Controller});
+    $routeProvider.when('/finsoiree', {templateUrl: '/pages/partials/chaines.html', controller: FinSoireeController});
     $routeProvider.otherwise({redirectTo: '/now'});
   }]);
 

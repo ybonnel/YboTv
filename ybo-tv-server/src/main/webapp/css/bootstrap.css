@@ -2339,6 +2339,7 @@ table th[class*="span"],
 .dropdown-menu .active > a:hover {
   color: #999999;
   text-decoration: none;
+  color:white;
   outline: 0;
   background-color: #2ab2e4;
   background-image: -moz-linear-gradient(top, #33b5e5, #1dade2);
