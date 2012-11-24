@@ -310,7 +310,7 @@
 				<!--
 					During release, set application version in appengine-web.xml to 2
 				-->
-				<gae.application.version>1</gae.application.version>
+				<gae.application.version>prod</gae.application.version>
 			</properties>
 		</profile>
 	</profiles>
