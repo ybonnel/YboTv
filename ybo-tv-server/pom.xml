@@ -233,7 +233,7 @@
 			<plugin>
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
-					<goals>gae:deploy -f ybo-tv-server/pom.xml</goals>
+					<goals>gae:deploy -f ybo-tv-server/pom.xml -Prelease-build</goals>
 				</configuration>
 			</plugin>
 
