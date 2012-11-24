@@ -5,6 +5,7 @@ import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import fr.ybo.modele.ProgrammeForMemCache;
 import fr.ybo.util.GetTv;
 import fr.ybo.xmltv.Channel;
 import fr.ybo.xmltv.Programme;
@@ -14,11 +15,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class ProgrammeService extends DataService<Programme> {
+public class ProgrammeService extends DataService<ProgrammeForMemCache> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Programme> getAll() throws ServiceExeption {
+    public List<ProgrammeForMemCache> getAll() throws ServiceExeption {
         try {
             return GetTv.getCurrentTv().getProgramme();
         } catch (JAXBException jaxbException) {
@@ -30,12 +31,12 @@ public class ProgrammeService extends DataService<Programme> {
     }
 
     @Override
-    public Programme getById(String id) throws ServiceExeption {
+    public ProgrammeForMemCache getById(String id) throws ServiceExeption {
         String idMemCache = "programme_" + id;
         MemcacheService service = MemcacheServiceFactory.getMemcacheService();
-        Programme programme = (Programme) service.get(idMemCache);
+        ProgrammeForMemCache programme = (ProgrammeForMemCache) service.get(idMemCache);
         if (programme == null) {
-            for (Programme oneProgramme : getAll()) {
+            for (ProgrammeForMemCache oneProgramme : getAll()) {
                 if (id.equals(oneProgramme.getId())) {
                     programme = oneProgramme;
                     break;
@@ -48,14 +49,14 @@ public class ProgrammeService extends DataService<Programme> {
         return programme;
     }
 
-    private List<Programme> getByChannel(String channel) throws ServiceExeption {
+    private List<ProgrammeForMemCache> getByChannel(String channel) throws ServiceExeption {
         String currentDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         String memCacheId = "programmeByChannel_" + channel + "_" + currentDate;
         MemcacheService service = MemcacheServiceFactory.getMemcacheService();
-        List<Programme> programmes = (List<Programme>) service.get(memCacheId);
+        List<ProgrammeForMemCache> programmes = (List<ProgrammeForMemCache>) service.get(memCacheId);
         if (programmes == null) {
-            programmes = new ArrayList<Programme>();
-            for (Programme programme : getAll()) {
+            programmes = new ArrayList<ProgrammeForMemCache>();
+            for (ProgrammeForMemCache programme : getAll()) {
                 if (channel.equals(programme.getChannel())) {
                     programmes.add(programme);
                 }
@@ -66,7 +67,7 @@ public class ProgrammeService extends DataService<Programme> {
     }
 
     @Override
-    public List<Programme> getBy(String parameterName, String parameterValue) throws ServiceExeption {
+    public List<ProgrammeForMemCache> getBy(String parameterName, String parameterValue) throws ServiceExeption {
         if ("id".equals(parameterName)) {
             return Collections.singletonList(getById(parameterValue));
         } else if ("channel".equals(parameterName)) {
@@ -75,10 +76,10 @@ public class ProgrammeService extends DataService<Programme> {
         return null;
     }
 
-    private Collection<Programme> getByChannelAndDate(String channel, final String date) throws ServiceExeption {
-        return Collections2.filter(getByChannel(channel), new Predicate<Programme>() {
+    private Collection<ProgrammeForMemCache> getByChannelAndDate(String channel, final String date) throws ServiceExeption {
+        return Collections2.filter(getByChannel(channel), new Predicate<ProgrammeForMemCache>() {
             @Override
-            public boolean apply(Programme programme) {
+            public boolean apply(ProgrammeForMemCache programme) {
                 return programme.getStart().compareTo(date) <= 0
                         && programme.getStop().compareTo(date) >= 0;
             }
@@ -86,11 +87,11 @@ public class ProgrammeService extends DataService<Programme> {
     }
 
     @Override
-    public List<Programme> get(String... parameters) throws ServiceExeption {
+    public List<ProgrammeForMemCache> get(String... parameters) throws ServiceExeption {
         if (parameters.length == 4) {
             if ("channel".equals(parameters[0])
                     && "date".equals(parameters[2])) {
-                return new ArrayList<Programme>(getByChannelAndDate(parameters[1], parameters[3]));
+                return new ArrayList<ProgrammeForMemCache>(getByChannelAndDate(parameters[1], parameters[3]));
 
             }
         }

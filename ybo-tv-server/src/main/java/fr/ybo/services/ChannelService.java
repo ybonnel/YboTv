@@ -2,6 +2,8 @@ package fr.ybo.services;
 
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
+import fr.ybo.modele.ChannelForMemCache;
+import fr.ybo.modele.ProgrammeForMemCache;
 import fr.ybo.util.GetTv;
 import fr.ybo.xmltv.Channel;
 import fr.ybo.xmltv.Programme;
@@ -12,14 +14,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ChannelService extends DataService<Channel> {
+public class ChannelService extends DataService<ChannelForMemCache> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Channel> getAll() throws ServiceExeption {
+    public List<ChannelForMemCache> getAll() throws ServiceExeption {
         try {
             MemcacheService service = MemcacheServiceFactory.getMemcacheService();
-            List<Channel> channels = (List<Channel>) service.get("channels");
+            List<ChannelForMemCache> channels = (List<ChannelForMemCache>) service.get("channels");
             if (channels == null) {
                 channels = GetTv.getCurrentTv().getChannel();
                 service.put("channels", channels);
@@ -34,12 +36,12 @@ public class ChannelService extends DataService<Channel> {
     }
 
     @Override
-    public Channel getById(String id) throws ServiceExeption {
+    public ChannelForMemCache getById(String id) throws ServiceExeption {
         String idMemCache = "channel_" + id;
         MemcacheService service = MemcacheServiceFactory.getMemcacheService();
-        Channel channel = (Channel) service.get(idMemCache);
+        ChannelForMemCache channel = (ChannelForMemCache) service.get(idMemCache);
         if (channel == null) {
-            for (Channel oneChannel : getAll()) {
+            for (ChannelForMemCache oneChannel : getAll()) {
                 if (id.equals(oneChannel.getId())) {
                     channel = oneChannel;
                     break;
@@ -53,13 +55,13 @@ public class ChannelService extends DataService<Channel> {
     }
 
     @Override
-    public List<Channel> getBy(String parameterName, String parameterValue) throws ServiceExeption {
+    public List<ChannelForMemCache> getBy(String parameterName, String parameterValue) throws ServiceExeption {
         if ("id".equals(parameterName)) {
             return Collections.singletonList(getById(parameterValue));
         } else if ("date".equals(parameterName)) {
-            List<Channel> channels = getAll();
-            for (Channel channel : channels) {
-                List<Programme> programmes = ((ProgrammeService) ServiceFactory.getService("programme")).get("channel", channel.getId(), "date", parameterValue);
+            List<ChannelForMemCache> channels = getAll();
+            for (ChannelForMemCache channel : channels) {
+                List<ProgrammeForMemCache> programmes = ((ProgrammeService) ServiceFactory.getService("programme")).get("channel", channel.getId(), "date", parameterValue);
                 if (!programmes.isEmpty()) {
                     channel.setCurrentProgramme(programmes.get(0));
                 }
@@ -70,7 +72,7 @@ public class ChannelService extends DataService<Channel> {
     }
 
     @Override
-    public List<Channel> get(String... parameters) throws ServiceExeption {
+    public List<ChannelForMemCache> get(String... parameters) throws ServiceExeption {
         return null;
     }
 

@@ -57,7 +57,10 @@ public class DataServlet extends HttpServlet {
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
                 jsonResponse = mapper.writeValueAsString(result);
-                cacheService.put(memCacheId, jsonResponse);
+                // On ne met en cache la réponse que si elle fait moins de 500Ko.
+                if (jsonResponse.length() < 500000) {
+                    cacheService.put(memCacheId, jsonResponse);
+                }
             }
             resp.getWriter().print(jsonResponse);
         } catch (ServiceExeption serviceExeption) {

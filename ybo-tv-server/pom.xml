@@ -8,7 +8,7 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
-  <name>YboTvServer</name>
+  <name>ybo-tv</name>
 
 	<dependencies>
 
@@ -310,7 +310,7 @@
 				<!--
 					During release, set application version in appengine-web.xml to 2
 				-->
-				<gae.application.version>release</gae.application.version>
+				<gae.application.version>1</gae.application.version>
 			</properties>
 		</profile>
 	</profiles>
