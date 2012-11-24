@@ -1,6 +1,6 @@
 
 <div class="row">
-    <div class="span2 panneauChaine">
+    <div class="span2">
     <ul class="nav nav-list well">
         <li class="nav-header">Chaînes</li>
         <li class="{{{true:'active', false:''}[chaine.id == chaineCourante]}}" ng-repeat="chaine in chaines"><a href="/#/chaine/{{chaine.id}}">
@@ -10,7 +10,7 @@
     <div class="span9">
 
         <div class="row">
-            <div class="media well" ng-repeat="programme in programmes">
+            <div id="{{programme.id}}" class="media well" ng-repeat="programme in programmes">
                 <a class="pull-left span2">
                     <img class="media-object" ng-src="{{programme.icon}}"/>
                 </a>
@@ -32,3 +32,4 @@
 
     </div>
 </div>
+
