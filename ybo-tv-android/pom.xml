@@ -1,55 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.ybo</groupId>
-    <artifactId>ybo-tv-android-parent</artifactId>
+    <artifactId>ybo-tv-android</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>ybo-tv-android - Parent</name>
+    <packaging>apk</packaging>
+    <name>ybo-tv-android - Application</name>
 
-    <modules>
-        <module>ybo-tv-android</module>
-    </modules>
-
-    <properties>
-        <platform.version> 4.0.1.2
-            </platform.version>
-    </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.google.android</groupId>
-                <artifactId>android</artifactId>
-                <version>${platform.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.google.android</groupId>
-                <artifactId>android-test</artifactId>
-                <version>${platform.version}</version>
-                <scope>provided</scope>
-            </dependency>
-
-            <!-- Androlog is a logging and reporting library for Android -->
-            <dependency>
-                <groupId>de.akquinet.android.androlog</groupId>
-                <artifactId>androlog</artifactId>
-                <version>1.0.5</version>
-            </dependency>
-
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.10</version>
-                <scope>provided</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+        </dependency>
+    </dependencies>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <extensions>true</extensions>
+            </plugin>
+        </plugins>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -65,7 +40,7 @@
                         <sdk>
                             <platform>14</platform>
                         </sdk>
-                                                <undeployBeforeDeploy>true</undeployBeforeDeploy>
+                        <undeployBeforeDeploy>true</undeployBeforeDeploy>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -94,7 +69,7 @@
                     <inherited>true</inherited>
                     <configuration>
                         <removeExistingSignatures>true</removeExistingSignatures>
-                        <archiveDirectory />
+                        <archiveDirectory/>
                         <archive>${project.build.directory}/${project.build.finalName}.${project.packaging}</archive>
                         <verbose>true</verbose>
                         <certs>true</certs>
@@ -126,7 +101,7 @@
 
     <profiles>
         <profile>
-            <id>release</id>
+            <id>android-release</id>
             <activation>
                 <property>
                     <name>performRelease</name>
@@ -135,6 +110,45 @@
             </activation>
             <build>
                 <plugins>
+                    <plugin>
+                        <artifactId>maven-jarsigner-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-application-apk</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                        <artifactId>android-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>zipalign-application-apk</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>zipalign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <zipalign>
+                                <verbose>true</verbose>
+                                <inputApk>${project.build.directory}/${project.artifactId}-${project.version}.apk
+                                </inputApk>
+                                <outputApk>
+                                    ${project.build.directory}/${project.artifactId}-${project.version}-signed-aligned.apk
+                                </outputApk>
+                            </zipalign>
+                            <sign>
+                                <debug>false</debug>
+                            </sign>
+                        </configuration>
+                    </plugin>
                     <plugin>
                         <artifactId>maven-enforcer-plugin</artifactId>
                         <executions>
@@ -147,31 +161,40 @@
                                     <rules>
                                         <requireProperty>
                                             <property>sign.keystore</property>
-                                            <message>The 'sign.keystore' property is missing. It must contain the path to the
-                                                keystore used to sign the application.</message>
+                                            <message>The 'sign.keystore' property is missing. It must contain the path
+                                                to the
+                                                keystore used to sign the application.
+                                            </message>
                                         </requireProperty>
                                         <requireFilesExist>
                                             <files>
                                                 <file>${sign.keystore}</file>
                                             </files>
-                                            <message>The 'sign.keystore' property does not point to a file. It must contain the
-                                                path to the keystore used to sign the application.</message>
+                                            <message>The 'sign.keystore' property does not point to a file. It must
+                                                contain the
+                                                path to the keystore used to sign the application.
+                                            </message>
                                         </requireFilesExist>
                                         <requireProperty>
                                             <property>sign.alias</property>
-                                            <message>The 'sign.alias' property is missing. It must contain the key alias used to
-                                                sign the application.</message>
+                                            <message>The 'sign.alias' property is missing. It must contain the key alias
+                                                used to
+                                                sign the application.
+                                            </message>
                                         </requireProperty>
                                         <requireProperty>
                                             <property>sign.storepass</property>
-                                            <message>The 'sign.storepass' property is missing. It must contain the password of
+                                            <message>The 'sign.storepass' property is missing. It must contain the
+                                                password of
                                                 the keystore used to sign the application.
-                      </message>
+                                            </message>
                                         </requireProperty>
                                         <requireProperty>
                                             <property>sign.keypass</property>
-                                            <message>The 'sign.keypass' property is missing. It must contain the password of the
-                                                key used to sign the application.</message>
+                                            <message>The 'sign.keypass' property is missing. It must contain the
+                                                password of the
+                                                key used to sign the application.
+                                            </message>
                                         </requireProperty>
                                     </rules>
                                 </configuration>
@@ -223,4 +246,33 @@
         </profile>
     </profiles>
 
+
+    <properties>
+        <platform.version>4.0.1.2</platform.version>
+    </properties>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.google.android</groupId>
+                <artifactId>android</artifactId>
+                <version>${platform.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.google.android</groupId>
+                <artifactId>android-test</artifactId>
+                <version>${platform.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.10</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
