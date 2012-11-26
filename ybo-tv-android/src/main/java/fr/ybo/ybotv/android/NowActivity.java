@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import com.actionbarsherlock.app.SherlockActivity;
 
-public class HelloAndroidActivity extends SherlockActivity {
+public class NowActivity extends SherlockActivity {
 
     private static String TAG = "ybo-tv-android";
 
