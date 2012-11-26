@@ -36,6 +36,11 @@ public abstract class AbstractActivity extends SherlockActivity implements Actio
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getSupportActionBar().setSelectedNavigationItem(getItemPositionForCurrentClass());
+    }
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
