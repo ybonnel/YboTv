@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="fr.ybo.ybotv.android" android:versionCode="1" android:versionName="1.0-SNAPSHOT">
+    <uses-permission android:name="android.permission.INTERNET"/>
 
-    <application android:icon="@drawable/icon" android:label="@string/app_name" android:theme="@style/Theme.Sherlock">
-        <activity android:name=".NowActivity">
+    <application android:icon="@drawable/icon" android:label="@string/app_name"
+                 android:theme="@style/Theme.Sherlock"
+                 android:name=".YboTvApplication">
+        <activity android:name=".activity.NowActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".CeSoirActivity"/>
-        <activity android:name=".ParChaineActivity"/>
+        <activity android:name=".activity.CeSoirActivity"/>
+        <activity android:name=".activity.ParChaineActivity"/>
+        <activity android:name=".activity.LoadingActivity"/>
     </application>
 
 </manifest>

@@ -1,19 +1,20 @@
-package fr.ybo.ybotv.android;
+package fr.ybo.ybotv.android.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockListActivity;
+import fr.ybo.ybotv.android.R;
 import fr.ybo.ybotv.android.util.ArraysUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractActivity extends SherlockActivity implements ActionBar.OnNavigationListener {
+public abstract class AbstractActivity extends SherlockListActivity implements ActionBar.OnNavigationListener {
 
-    private static final String TAG = "ybo-tv-android";
+    protected static final String TAG = "ybo-tv-android";
 
     private final static Map<Integer, Class<? extends AbstractActivity>> mapOfActivity = new HashMap<Integer, Class<? extends AbstractActivity>>(){{
         put(R.id.menu_now, NowActivity.class);
