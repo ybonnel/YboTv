@@ -3,14 +3,11 @@ package fr.ybo.ybotv.android.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import fr.ybo.ybotv.android.R;
 import fr.ybo.ybotv.android.YboTvApplication;
+import fr.ybo.ybotv.android.adapter.ProgrammeAdapter;
 import fr.ybo.ybotv.android.database.YboTvDatabase;
-import fr.ybo.ybotv.android.modele.Channel;
 import fr.ybo.ybotv.android.modele.ChannelWithProgramme;
 import fr.ybo.ybotv.android.modele.LastUpdate;
 
@@ -19,14 +16,17 @@ import java.util.concurrent.TimeUnit;
 
 public class NowActivity extends AbstractActivity {
 
+    private ProgrammeAdapter adapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        ((TextView) findViewById(R.id.hello)).setText(R.string.now);
         createMenu();
 
-        setListAdapter(new ArrayAdapter<ChannelWithProgramme>(this, android.R.layout.simple_list_item_1, channels));
+        adapter = new ProgrammeAdapter(this, channels);
+
+        setListAdapter(adapter);
         ListView listView = getListView();
         listView.setTextFilterEnabled(true);
         registerForContextMenu(listView);
@@ -79,7 +79,7 @@ public class NowActivity extends AbstractActivity {
         channels.clear();
         channels.addAll(newChannels);
         Log.d(TAG, "Taille channels : " + channels.size());
-        ((ArrayAdapter) getListAdapter()).notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
 
     }
 

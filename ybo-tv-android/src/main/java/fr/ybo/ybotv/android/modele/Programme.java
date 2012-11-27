@@ -37,6 +37,21 @@ public class Programme implements Serializable {
     @Column
     private String starRating;
 
+    public String getHoraires() {
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(start.substring(8, 10));
+        builder.append(':');
+        builder.append(start.substring(10,12));
+        builder.append(" - ");
+        builder.append(stop.substring(8,10));
+        builder.append(':');
+        builder.append(stop.substring(10,12));
+
+        return builder.toString();
+
+    }
+
     public String getId() {
         return id;
     }

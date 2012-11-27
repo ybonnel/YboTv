@@ -17,6 +17,12 @@ public class Channel implements Serializable {
     @Column
     private String icon;
 
+    private final static String BASE_URL = "http://ybo-tv.appspot.com/logos/";
+
+    public String getIconUrl() {
+        return BASE_URL + icon;
+    }
+
     public String getId() {
         return id;
     }
