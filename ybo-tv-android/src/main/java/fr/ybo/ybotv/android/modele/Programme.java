@@ -2,6 +2,8 @@ package fr.ybo.ybotv.android.modele;
 
 import fr.ybo.database.annotation.Column;
 import fr.ybo.database.annotation.Entity;
+import fr.ybo.database.annotation.Indexed;
+import fr.ybo.database.annotation.PrimaryKey;
 
 import java.io.Serializable;
 
@@ -9,12 +11,16 @@ import java.io.Serializable;
 public class Programme implements Serializable {
 
     @Column
+    @PrimaryKey
     private String id;
     @Column
+    @Indexed
     private String start;
     @Column
+    @Indexed
     private String stop;
     @Column
+    @Indexed
     private String channel;
     @Column
     private String date;
@@ -117,5 +123,16 @@ public class Programme implements Serializable {
 
     public void setStarRating(String starRating) {
         this.starRating = starRating;
+    }
+
+    @Override
+    public String toString() {
+        return "Programme{" +
+                "id='" + id + '\'' +
+                ", start='" + start + '\'' +
+                ", stop='" + stop + '\'' +
+                ", channel='" + channel + '\'' +
+                ", title='" + title + '\'' +
+                '}';
     }
 }

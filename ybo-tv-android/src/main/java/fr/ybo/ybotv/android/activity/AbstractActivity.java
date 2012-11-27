@@ -14,7 +14,7 @@ import java.util.Map;
 
 public abstract class AbstractActivity extends SherlockListActivity implements ActionBar.OnNavigationListener {
 
-    protected static final String TAG = "ybo-tv-android";
+    protected static final String TAG = "YboTv";
 
     private final static Map<Integer, Class<? extends AbstractActivity>> mapOfActivity = new HashMap<Integer, Class<? extends AbstractActivity>>(){{
         put(R.id.menu_now, NowActivity.class);

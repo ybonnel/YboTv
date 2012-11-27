@@ -1,6 +1,5 @@
 package fr.ybo.ybotv.android.activity;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -10,13 +9,14 @@ import com.actionbarsherlock.app.SherlockActivity;
 import fr.ybo.ybotv.android.R;
 import fr.ybo.ybotv.android.YboTvApplication;
 import fr.ybo.ybotv.android.database.YboTvDatabase;
+import fr.ybo.ybotv.android.exception.YboTvErreurReseau;
 import fr.ybo.ybotv.android.modele.Channel;
 import fr.ybo.ybotv.android.modele.LastUpdate;
 import fr.ybo.ybotv.android.modele.Programme;
 import fr.ybo.ybotv.android.service.YboTvService;
+import fr.ybo.ybotv.android.util.TacheAvecGestionErreurReseau;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class LoadingActivity extends SherlockActivity {
 
@@ -44,20 +44,65 @@ public class LoadingActivity extends SherlockActivity {
 
     @SuppressWarnings("unchecked")
     private void loadChannel() {
-        messageLoading.setText(R.string.loadingChannels);
-        new AsyncTask<Void, Void, Void>() {
+        messageLoading.setText(R.string.getChannels);
+        new TacheAvecGestionErreurReseau(this) {
 
             @Override
-            protected Void doInBackground(Void... voids) {
+            protected void myDoBackground() throws YboTvErreurReseau{
+                // Récupération des chaines
+                List<Channel> channels = YboTvService.getInstance().getChannels();
+
+                handler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        messageLoading.setText(R.string.getProgrammes);
+                    }
+                });
+
+                Set<String> programeIds = new HashSet<String>();
+
+                List<Programme> programmesToInsert = new ArrayList<Programme>();
+
+                int count = 0;
+                int nbChaines = channels.size();
+
+                for (Channel channel : channels) {
+
+                    for (Programme programme : YboTvService.getInstance().getProgrammes(channel)) {
+
+                        if (!programeIds.contains(programme.getId())) {
+                            programmesToInsert.add(programme);
+                            programeIds.add(programme.getId());
+                        }
+                    }
+
+                    count++;
+                    final int progress = 100 * count / (nbChaines + 2);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingBar.setProgress(progress);
+                        }
+                    });
+                }
+
+
+                handler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        messageLoading.setText(R.string.loadingChannels);
+                    }
+                });
+
                 YboTvDatabase database = ((YboTvApplication) getApplication()).getDatabase();
                 // Suppression des anciennes chaînes.
                 database.deleteAll(Channel.class);
 
                 // insertion des nouvelles chaines
-                List<Channel> channels = null;
                 try {
                     database.beginTransaction();
-                    channels = YboTvService.getInstance().getChannels();
                     for (Channel channel : channels) {
                         database.insert(channel);
                     }
@@ -74,41 +119,26 @@ public class LoadingActivity extends SherlockActivity {
                 });
 
                 // Suppression de tout les programmes.
-                int count = 0;
                 database.deleteAll(Programme.class);
 
-
-                for (Channel channel : channels) {
-
-                    try {
-                        database.beginTransaction();
-                        for (Programme programme : YboTvService.getInstance().getProgrammes(channel)) {
-                            database.insert(programme);
-                        }
-                    } finally {
-                        database.endTransaction();
+                try {
+                    database.beginTransaction();
+                    for (Programme programme : programmesToInsert) {
+                        database.insert(programme);
                     }
-
-                    count++;
-                    final int progress = 100 * count / channels.size();
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadingBar.setProgress(progress);
-                        }
-                    });
+                } finally {
+                    database.endTransaction();
                 }
 
                 database.deleteAll(LastUpdate.class);
                 LastUpdate lastUpdate = new LastUpdate();
                 lastUpdate.setLastUpdate(new Date());
                 database.insert(lastUpdate);
-
-                return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
                 finish();
             }
         }.execute();

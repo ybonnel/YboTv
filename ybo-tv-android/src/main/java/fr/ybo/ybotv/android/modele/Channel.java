@@ -2,6 +2,7 @@ package fr.ybo.ybotv.android.modele;
 
 import fr.ybo.database.annotation.Column;
 import fr.ybo.database.annotation.Entity;
+import fr.ybo.database.annotation.PrimaryKey;
 
 import java.io.Serializable;
 
@@ -9,6 +10,7 @@ import java.io.Serializable;
 public class Channel implements Serializable {
 
     @Column
+    @PrimaryKey
     private String id;
     @Column
     private String displayName;

@@ -19,4 +19,11 @@ public class LastUpdate {
     public void setLastUpdate(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
+
+    @Override
+    public String toString() {
+        return "LastUpdate{" +
+                "lastUpdate=" + lastUpdate +
+                '}';
+    }
 }
