@@ -714,6 +714,8 @@
     .on('click.dropdown.data-api touchstart.dropdown.data-api'  , toggle, Dropdown.prototype.toggle)
     .on('keydown.dropdown.data-api touchstart.dropdown.data-api', toggle + ', [role=menu]' , Dropdown.prototype.keydown)
 
+  $('.dropdown-menu').on('touchstart.dropdown.data-api', function(e) { e.stopPropagation() })
+
 }(window.jQuery);/* =========================================================
  * bootstrap-modal.js v2.2.1
  * http://twitter.github.com/bootstrap/javascript.html#modals
