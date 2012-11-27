@@ -7,4 +7,5 @@
     <string name="parchaine">Par chaîne</string>
     <string name="loading">Chargement</string>
     <string name="loadingChannels">Chargement des chaînes</string>
+    <string name="loadingProgrammes">Chargement des programmes</string>
 </resources>

@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import fr.ybo.ybotv.android.exception.YboTvException;
 import fr.ybo.ybotv.android.modele.Channel;
+import fr.ybo.ybotv.android.modele.Programme;
 import fr.ybo.ybotv.android.util.HttpUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -24,7 +25,11 @@ public class YboTvService {
 
     private static final String SERVEUR = "http://ybo-tv.appspot.com/";
 
-    private static final String CHANNEL_SERVICE_URL = "data/channel";
+    private static final String CHANNEL_SERVICE_URL = "data/channel/";
+
+    private static final String PROGRAMME_SERVICE_URL = "data/programme/";
+
+    private static final String CHANNEL_PARAMETER = "channel/";
 
     private YboTvService() {
     }
@@ -33,7 +38,7 @@ public class YboTvService {
         return instance;
     }
 
-    public List<Channel> getChannels()  {
+    public <T> List<T> getObjects(String url, TypeToken<List<T>> typeToken) {
         try {
             HttpClient client = HttpUtils.getHttpClient();
             HttpUriRequest request = new HttpGet(SERVEUR + CHANNEL_SERVICE_URL);
@@ -41,13 +46,21 @@ public class YboTvService {
             Reader reader = new InputStreamReader(reponse.getEntity().getContent());
             GsonBuilder gsonBuilder = new GsonBuilder();
             Gson gson = gsonBuilder.create();
-            List<Channel> channels = gson.fromJson(reader, new TypeToken<List<Channel>>(){}.getType());
+            List<T> objects = gson.fromJson(reader, typeToken.getType());
             reader.close();
-            return channels;
+            return objects;
         } catch (MalformedURLException e) {
             throw new YboTvException(e);
         } catch (IOException e) {
             throw new YboTvException(e);
         }
+    }
+
+    public List<Channel> getChannels()  {
+        return getObjects(SERVEUR + CHANNEL_SERVICE_URL, new TypeToken<List<Channel>>(){});
+    }
+
+    public List<Programme> getProgrammes(Channel channel) {
+        return getObjects(SERVEUR + PROGRAMME_SERVICE_URL + CHANNEL_PARAMETER + channel.getId(), new TypeToken<List<Programme>>(){});
     }
 }
