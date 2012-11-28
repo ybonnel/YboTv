@@ -19,7 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class ViewFlowAdapter extends BaseAdapter implements TitleProvider {
+public class CeSoirViewFlowAdapter extends BaseAdapter implements TitleProvider {
 
 
     private LayoutInflater inflater;
@@ -28,7 +28,7 @@ public class ViewFlowAdapter extends BaseAdapter implements TitleProvider {
     private int[] titles = {R.string.primeTime, R.string.partie2, R.string.finSoiree};
 
 
-    public ViewFlowAdapter(Activity context) {
+    public CeSoirViewFlowAdapter(Activity context) {
         this.inflater = LayoutInflater.from(context);
         this.context = context;
     }
