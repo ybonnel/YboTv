@@ -14,9 +14,10 @@ import fr.ybo.ybotv.android.modele.LastUpdate;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class NowActivity extends MenuManager.AbstractListActivity {
+public class NowActivity extends MenuManager.AbstractListActivity implements ListProgrammeManager.GetProgramme {
 
-    private ProgrammeAdapter adapter;
+
+    private ListProgrammeManager listProgrammeManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,12 +25,7 @@ public class NowActivity extends MenuManager.AbstractListActivity {
         setContentView(R.layout.list);
         createMenu();
 
-        adapter = new ProgrammeAdapter(this, channels);
-
-        setListAdapter(adapter);
-        ListView listView = getListView();
-        listView.setTextFilterEnabled(true);
-        registerForContextMenu(listView);
+        listProgrammeManager = new ListProgrammeManager(getListView(), this, this);
 
         YboTvDatabase database = ((YboTvApplication) getApplication()).getDatabase();
         LastUpdate lastUpdate = database.selectSingle(new LastUpdate());
@@ -37,55 +33,20 @@ public class NowActivity extends MenuManager.AbstractListActivity {
         if (lastUpdate == null || mustUpdate(lastUpdate)) {
             startActivity(new Intent(this, LoadingActivity.class));
         } else {
-            constructAdapter();
+            listProgrammeManager.constructAdapter();
         }
     }
 
-    private List<ChannelWithProgramme> channels = new ArrayList<ChannelWithProgramme>();
 
-    private void constructAdapter() {
-
-        List<ChannelWithProgramme> newChannels = ChannelWithProgramme.getCurrentProgrammes((YboTvApplication) getApplication());
-
-        // Sort
-        Collections.sort(newChannels, new Comparator<ChannelWithProgramme>() {
-            @Override
-            public int compare(ChannelWithProgramme channelWithProgramme, ChannelWithProgramme channelWithProgramme1) {
-                int id1 = Integer.parseInt(channelWithProgramme.getChannel().getId());
-                int id2 = Integer.parseInt(channelWithProgramme1.getChannel().getId());
-                if (id1 == id2) {
-                    String start1 = channelWithProgramme.getProgramme().getStart();
-                    String start2 = channelWithProgramme1.getProgramme().getStart();
-                    return start1.compareTo(start2);
-                }
-                return (id1 < id2) ? -1 : 1;
-            }
-        });
-
-        // Dédoublonnage
-        Iterator<ChannelWithProgramme> iterator = newChannels.iterator();
-        Set<String> channelsAlreadyIn = new HashSet<String>();
-        while (iterator.hasNext()) {
-            ChannelWithProgramme currentChannel = iterator.next();
-            if (channelsAlreadyIn.contains(currentChannel.getChannel().getId())) {
-                iterator.remove();
-            } else {
-                channelsAlreadyIn.add(currentChannel.getChannel().getId());
-            }
-        }
-
-        channels.clear();
-        channels.addAll(newChannels);
-        Log.d(YboTvApplication.TAG, "Taille channels : " + channels.size());
-        adapter.notifyDataSetChanged();
-
+    public List<ChannelWithProgramme> getProgrammes() {
+        return ChannelWithProgramme.getCurrentProgrammes((YboTvApplication) getApplication());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(YboTvApplication.TAG, "onResume");
-        constructAdapter();
+        listProgrammeManager.constructAdapter();
     }
 
     private boolean mustUpdate(LastUpdate lastUpdate) {

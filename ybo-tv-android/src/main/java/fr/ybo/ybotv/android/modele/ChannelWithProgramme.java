@@ -6,9 +6,7 @@ import fr.ybo.ybotv.android.YboTvApplication;
 import fr.ybo.ybotv.android.database.YboTvDatabase;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class ChannelWithProgramme {
 
@@ -36,8 +34,7 @@ public class ChannelWithProgramme {
         return channel.getDisplayName() + " : " + programme.getTitle();
     }
 
-    public static List<ChannelWithProgramme> getCurrentProgrammes(YboTvApplication application) {
-
+    public static List<ChannelWithProgramme> getProgrammesForDate(YboTvApplication application, String date) {
         YboTvDatabase database = application.getDatabase();
 
         StringBuilder sqlQuery = new StringBuilder();
@@ -64,9 +61,7 @@ public class ChannelWithProgramme {
 
         List<String> selectionArgs = new ArrayList<String>(1);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-
-        selectionArgs.add(dateFormat.format(new Date()));
+        selectionArgs.add(date);
 
         long startTime = System.nanoTime();
         Cursor cursor = database.executeSelectQuery(sqlQuery.toString(), selectionArgs);
@@ -121,6 +116,22 @@ public class ChannelWithProgramme {
 
         cursor.close();
 
+        Iterator<ChannelWithProgramme> iterator = channels.iterator();
+        Set<String> channelsAlreadyIn = new HashSet<String>();
+        while (iterator.hasNext()) {
+            ChannelWithProgramme currentChannel = iterator.next();
+            if (channelsAlreadyIn.contains(currentChannel.getChannel().getId())) {
+                iterator.remove();
+            } else {
+                channelsAlreadyIn.add(currentChannel.getChannel().getId());
+            }
+        }
+
         return channels;
+    }
+
+    public static List<ChannelWithProgramme> getCurrentProgrammes(YboTvApplication application) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        return getProgrammesForDate(application, dateFormat.format(new Date()));
     }
 }
