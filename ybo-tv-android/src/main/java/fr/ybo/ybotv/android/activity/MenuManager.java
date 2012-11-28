@@ -98,7 +98,9 @@ public class MenuManager implements ActionBar.OnNavigationListener {
 
     protected void startActivityIfNotAlreadyIn(Class<? extends MenuManagerInterface> activityToStart) {
         if (this.activity.getClass() != activityToStart) {
-            this.activity.startActivity(new Intent(this.activity, activityToStart));
+            this.activity.finish();
+            Intent intent = new Intent(this.activity, activityToStart);
+            this.activity.startActivity(intent);
         }
     }
 
