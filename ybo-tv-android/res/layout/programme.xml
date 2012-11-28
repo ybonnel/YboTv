@@ -4,23 +4,25 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
     <ImageView android:layout_height="50dp"
-               android:layout_width="wrap_content"
+               android:layout_width="76dp"
                android:id="@+id/programme_imageChaine"
                android:layout_alignParentLeft="true"
                android:gravity="center_vertical|left"
-            />
-
-    <TextView android:id="@+id/programme_horaire"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/programme_imageChaine"
+               android:src="@drawable/loading"
             />
 
     <TextView android:id="@+id/programme_title"
-              android:layout_width="fill_parent"
+              android:layout_width="wrap_content"
               android:layout_height="match_parent"
-              android:layout_alignLeft="@id/programme_horaire"
-              android:layout_below="@id/programme_horaire"/>
+              android:layout_alignParentTop="true"
+              android:layout_toRightOf="@id/programme_imageChaine"/>
+
+    <TextView android:id="@+id/programme_horaire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/programme_title"
+            android:layout_alignParentRight="true"
+            />
+
 
 </RelativeLayout>

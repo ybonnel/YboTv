@@ -2,17 +2,16 @@ package fr.ybo.ybotv.android.adapter;
 
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.webimageloader.ImageLoader;
+import fr.ybo.ybotv.android.lasylist.ImageLoader;
 import fr.ybo.ybotv.android.R;
-import fr.ybo.ybotv.android.YboTvApplication;
 import fr.ybo.ybotv.android.modele.ChannelWithProgramme;
 
 import java.util.List;
@@ -20,13 +19,15 @@ import java.util.List;
 public class ProgrammeAdapter extends BaseAdapter {
 
     private final List<ChannelWithProgramme> programmes;
-    private final Context context;
     private final LayoutInflater inflater;
+    private ImageLoader imageLoader;
+    private Context context;
 
     public ProgrammeAdapter(Context context, List<ChannelWithProgramme> programmes) {
-        this.context = context;
         this.programmes = programmes;
         inflater = LayoutInflater.from(context);
+        imageLoader=new ImageLoader(context.getApplicationContext());
+        this.context = context;
     }
 
     @Override
@@ -68,22 +69,15 @@ public class ProgrammeAdapter extends BaseAdapter {
 
         ChannelWithProgramme currentProgramme = getItem(position);
 
+        if (currentProgramme == null || currentProgramme.getProgramme() == null) {
+            Log.e("YboTv", "CurrentProgramme : " + currentProgramme);
+        }
+
         holder.horaires.setText(currentProgramme.getProgramme().getHoraires());
         holder.title.setText(currentProgramme.getProgramme().getTitle());
-        ImageLoader loader = YboTvApplication.getLoader(context);
-        holder.iconeChaine = (ImageView) convertView.findViewById(R.id.programme_imageChaine);
-        loader.load(holder.iconeChaine, currentProgramme.getChannel().getIconUrl(), new ImageLoader.Listener<ImageView>() {
-            @Override
-            public void onSuccess(ImageView tag, Bitmap b) {
-                tag.setImageBitmap(b);
-            }
 
-            @Override
-            public void onError(ImageView tag, Throwable t) {
-                Log.e("YboTv", "Erreur durant le chargement de l'image");
-                Log.e("YboTv", Log.getStackTraceString(t));
-            }
-        });
+        holder.iconeChaine = (ImageView) convertView.findViewById(R.id.programme_imageChaine);
+        imageLoader.DisplayImage(currentProgramme.getChannel().getIconUrl(), holder.iconeChaine);
 
         return convertView;
     }

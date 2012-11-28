@@ -2,11 +2,9 @@ package fr.ybo.ybotv.android;
 
 
 import android.app.Application;
-import com.webimageloader.ImageLoader;
-import com.webimageloader.ext.ImageLoaderApplication;
 import fr.ybo.ybotv.android.database.YboTvDatabase;
 
-public class YboTvApplication extends ImageLoaderApplication {
+public class YboTvApplication extends Application {
 
     private YboTvDatabase database;
 
