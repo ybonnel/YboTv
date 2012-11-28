@@ -8,15 +8,13 @@ import org.taptwo.android.widget.ViewFlow;
 
 public class CeSoirActivity extends MenuManager.AbstractSimpleActivity {
 
-    private ViewFlow viewFlow;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cesoir);
+        setContentView(R.layout.flow);
         createMenu();
 
-        viewFlow = (ViewFlow) findViewById(R.id.viewflow);
+        ViewFlow viewFlow = (ViewFlow) findViewById(R.id.viewflow);
         CeSoirViewFlowAdapter adapter = new CeSoirViewFlowAdapter(this);
         viewFlow.setAdapter(adapter);
         TitleFlowIndicator indicator = (TitleFlowIndicator) findViewById(R.id.viewflowindic);
