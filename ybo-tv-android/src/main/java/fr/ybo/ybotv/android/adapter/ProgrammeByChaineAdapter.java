@@ -6,24 +6,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import fr.ybo.ybotv.android.lasylist.ImageLoader;
 import fr.ybo.ybotv.android.R;
+import fr.ybo.ybotv.android.lasylist.ImageLoader;
 import fr.ybo.ybotv.android.modele.ChannelWithProgramme;
+import fr.ybo.ybotv.android.modele.Programme;
 
 import java.util.List;
 
-public class ProgrammeAdapter extends BaseAdapter {
+public class ProgrammeByChaineAdapter extends BaseAdapter {
 
-    private final List<ChannelWithProgramme> programmes;
+    private final List<Programme> programmes;
     private final LayoutInflater inflater;
     private ImageLoader imageLoader;
     private Context context;
 
-    public ProgrammeAdapter(Context context, List<ChannelWithProgramme> programmes) {
+    public ProgrammeByChaineAdapter(Context context, List<Programme> programmes) {
         this.programmes = programmes;
         inflater = LayoutInflater.from(context);
         imageLoader=new ImageLoader(context.getApplicationContext());
@@ -36,7 +36,7 @@ public class ProgrammeAdapter extends BaseAdapter {
     }
 
     @Override
-    public ChannelWithProgramme getItem(int position) {
+    public Programme getItem(int position) {
         return programmes.get(position);
     }
 
@@ -68,16 +68,17 @@ public class ProgrammeAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        ChannelWithProgramme currentProgramme = getItem(position);
+        Programme currentProgramme = getItem(position);
 
-        if (currentProgramme == null || currentProgramme.getProgramme() == null) {
-            Log.e("YboTv", "CurrentProgramme : " + currentProgramme);
+        holder.horaires.setText(currentProgramme.getHoraires());
+        holder.title.setText(currentProgramme.getTitle());
+
+        if (currentProgramme.getIcon() != null && currentProgramme.getIcon().length() > 0) {
+            imageLoader.DisplayImage(currentProgramme.getIcon(), holder.iconeChaine);
+            holder.iconeChaine.setVisibility(View.VISIBLE);
+        } else {
+            holder.iconeChaine.setVisibility(View.GONE);
         }
-
-        holder.horaires.setText(currentProgramme.getProgramme().getHoraires());
-        holder.title.setText(currentProgramme.getProgramme().getTitle());
-
-        imageLoader.DisplayImage(currentProgramme.getChannel().getIconUrl(), holder.iconeChaine);
 
         return convertView;
     }

@@ -2,6 +2,7 @@ package fr.ybo.ybotv.android.adapter;
 
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,11 @@ import fr.ybo.ybotv.android.YboTvApplication;
 import fr.ybo.ybotv.android.activity.ListProgrammeManager;
 import fr.ybo.ybotv.android.modele.Channel;
 import fr.ybo.ybotv.android.modele.ChannelWithProgramme;
+import fr.ybo.ybotv.android.modele.Programme;
 import org.taptwo.android.widget.TitleProvider;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class ParChaineViewFlowAdapter extends BaseAdapter implements TitleProvider {
 
@@ -55,9 +55,9 @@ public class ParChaineViewFlowAdapter extends BaseAdapter implements TitleProvid
         }
 
         ListView listView = (ListView) convertView.findViewById(android.R.id.list);
-
-        // Todo gestion des programmes.
-
+        listView.setAdapter(new ProgrammeByChaineAdapter(context, Programme.getProgrammes((YboTvApplication) context.getApplication(), getItem(position))));
+        listView.setTextFilterEnabled(true);
+        context.registerForContextMenu(listView);
         return convertView;
     }
 
