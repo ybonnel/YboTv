@@ -14,14 +14,14 @@ import fr.ybo.ybotv.android.modele.LastUpdate;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class NowActivity extends AbstractActivity {
+public class NowActivity extends MenuManager.AbstractListActivity {
 
     private ProgrammeAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.now);
+        setContentView(R.layout.list);
         createMenu();
 
         adapter = new ProgrammeAdapter(this, channels);
@@ -33,7 +33,7 @@ public class NowActivity extends AbstractActivity {
 
         YboTvDatabase database = ((YboTvApplication) getApplication()).getDatabase();
         LastUpdate lastUpdate = database.selectSingle(new LastUpdate());
-        Log.d(TAG, "lastUpdate : " + lastUpdate);
+        Log.d(YboTvApplication.TAG, "lastUpdate : " + lastUpdate);
         if (lastUpdate == null || mustUpdate(lastUpdate)) {
             startActivity(new Intent(this, LoadingActivity.class));
         } else {
@@ -51,8 +51,6 @@ public class NowActivity extends AbstractActivity {
         Collections.sort(newChannels, new Comparator<ChannelWithProgramme>() {
             @Override
             public int compare(ChannelWithProgramme channelWithProgramme, ChannelWithProgramme channelWithProgramme1) {
-                Log.d(TAG, "Channel 1 : " + channelWithProgramme.getChannel().toString());
-                Log.d(TAG, "Channel 2 : " + channelWithProgramme1.getChannel().toString());
                 int id1 = Integer.parseInt(channelWithProgramme.getChannel().getId());
                 int id2 = Integer.parseInt(channelWithProgramme1.getChannel().getId());
                 if (id1 == id2) {
@@ -78,7 +76,7 @@ public class NowActivity extends AbstractActivity {
 
         channels.clear();
         channels.addAll(newChannels);
-        Log.d(TAG, "Taille channels : " + channels.size());
+        Log.d(YboTvApplication.TAG, "Taille channels : " + channels.size());
         adapter.notifyDataSetChanged();
 
     }
@@ -86,7 +84,7 @@ public class NowActivity extends AbstractActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume");
+        Log.d(YboTvApplication.TAG, "onResume");
         constructAdapter();
     }
 
@@ -96,14 +94,14 @@ public class NowActivity extends AbstractActivity {
         long timeSinceLastUpdate = date.getTime() - lastUpdate.getLastUpdate().getTime();
         long twoDays = TimeUnit.DAYS.toMillis(2);
 
-        Log.d(TAG, "timeSinceLastUpdate : " + timeSinceLastUpdate);
-        Log.d(TAG, "twoDays : " + twoDays);
+        Log.d(YboTvApplication.TAG, "timeSinceLastUpdate : " + timeSinceLastUpdate);
+        Log.d(YboTvApplication.TAG, "twoDays : " + twoDays);
 
         return (timeSinceLastUpdate > twoDays);
     }
 
     @Override
-    protected int getMenuIdOfClass() {
+    public int getMenuIdOfClass() {
         return R.id.menu_now;
     }
 }

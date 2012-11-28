@@ -3,7 +3,7 @@ package fr.ybo.ybotv.android.activity;
 import android.os.Bundle;
 import fr.ybo.ybotv.android.R;
 
-public class ParChaineActivity extends AbstractActivity {
+public class ParChaineActivity extends MenuManager.AbstractListActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -13,7 +13,7 @@ public class ParChaineActivity extends AbstractActivity {
     }
 
     @Override
-    protected int getMenuIdOfClass() {
+    public int getMenuIdOfClass() {
         return R.id.menu_parchaine;
     }
 }

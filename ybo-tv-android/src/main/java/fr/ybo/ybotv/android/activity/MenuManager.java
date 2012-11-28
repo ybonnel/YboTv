@@ -1,0 +1,106 @@
+package fr.ybo.ybotv.android.activity;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.widget.ArrayAdapter;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockListActivity;
+import fr.ybo.ybotv.android.R;
+import fr.ybo.ybotv.android.util.ArraysUtil;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class MenuManager implements ActionBar.OnNavigationListener {
+
+    public static interface MenuManagerInterface {
+
+        abstract int getMenuIdOfClass();
+        abstract ActionBar getSupportActionBar();
+    }
+
+    public static abstract class AbstractSimpleActivity extends SherlockActivity implements MenuManagerInterface {
+
+        private MenuManager actionBarManager = new MenuManager(this);
+
+        public void createMenu() {
+            actionBarManager.createMenu();
+        }
+
+        @Override
+        protected void onResume() {
+            super.onResume();
+            getSupportActionBar().setSelectedNavigationItem(actionBarManager.getItemPositionForCurrentClass());
+        }
+    }
+
+    public static abstract class AbstractListActivity extends SherlockListActivity implements MenuManagerInterface {
+
+        private MenuManager actionBarManager = new MenuManager(this);
+
+        public void createMenu() {
+            actionBarManager.createMenu();
+        }
+
+        @Override
+        protected void onResume() {
+            super.onResume();
+            getSupportActionBar().setSelectedNavigationItem(actionBarManager.getItemPositionForCurrentClass());
+        }
+    }
+
+    private final static Map<Integer, Class<? extends MenuManagerInterface>> mapOfActivity = new HashMap<Integer, Class<? extends MenuManagerInterface>>(){{
+        put(R.id.menu_now, NowActivity.class);
+        put(R.id.menu_cesoir, CeSoirActivity.class);
+        put(R.id.menu_parchaine, ParChaineActivity.class);
+    }};
+
+    private int[] menuIds;
+
+    private MenuManagerInterface menuManagerInterface;
+    private Activity activity;
+
+    public MenuManager(Activity activity) {
+        this.menuManagerInterface = (MenuManagerInterface) activity;
+        this.activity = activity;
+    }
+
+    public void createMenu() {
+
+        menuIds = ArraysUtil.getIdsArray(activity, R.array.menu_principal_ids);
+
+        Context context = menuManagerInterface.getSupportActionBar().getThemedContext();
+        ArrayAdapter<CharSequence> listMenu = ArrayAdapter.createFromResource(context, R.array.menu_principal_chaines, R.layout.sherlock_spinner_item);
+        listMenu.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
+        menuManagerInterface.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        menuManagerInterface.getSupportActionBar().setListNavigationCallbacks(listMenu, this);
+        menuManagerInterface.getSupportActionBar().setSelectedNavigationItem(getItemPositionForCurrentClass());
+        menuManagerInterface.getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+        startActivityIfNotAlreadyIn(mapOfActivity.get(menuIds[itemPosition]));
+        return true;
+    }
+
+
+    protected int getItemPositionForCurrentClass() {
+        for (int index = 0; index < menuIds.length; index++) {
+            if (menuIds[index] == menuManagerInterface.getMenuIdOfClass()) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
+    protected void startActivityIfNotAlreadyIn(Class<? extends MenuManagerInterface> activityToStart) {
+        if (this.activity.getClass() != activityToStart) {
+            this.activity.startActivity(new Intent(this.activity, activityToStart));
+        }
+    }
+
+
+}

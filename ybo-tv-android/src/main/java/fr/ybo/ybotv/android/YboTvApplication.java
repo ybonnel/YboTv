@@ -6,6 +6,9 @@ import fr.ybo.ybotv.android.database.YboTvDatabase;
 
 public class YboTvApplication extends Application {
 
+
+    public static final String TAG = "YboTv";
+
     private YboTvDatabase database;
 
     @Override

@@ -11,4 +11,8 @@
     <string name="loadingChannels">Chargement des chaînes</string>
     <string name="loadingProgrammes">Chargement des programmes</string>
     <string name="erreurReseau">Une erreru réseau est survenue, veuillez réessayer plus tard</string>
+
+    <string name="primeTime">Prime Time</string>
+    <string name="partie2">2ème partie</string>
+    <string name="finSoiree">Fin de soirée</string>
 </resources>
