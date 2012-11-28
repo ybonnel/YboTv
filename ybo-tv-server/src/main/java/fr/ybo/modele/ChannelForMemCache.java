@@ -19,25 +19,25 @@ public class ChannelForMemCache implements Serializable {
     }
 
     private final static Map<String, String> mapChaineLogo = new HashMap<String, String>(){{
-        put("1", "tf1.gif");
-        put("2", "france2.gif");
-        put("3", "france3.gif");
-        put("4", "canal.gif");
-        put("5", "france5.gif");
-        put("6", "m6.gif");
-        put("7", "arte.gif");
+        put("1", "tf1.png");
+        put("2", "france2.png");
+        put("3", "france3.png");
+        put("4", "canal.png");
+        put("5", "france5.png");
+        put("6", "m6.png");
+        put("7", "arte.png");
         put("8", "d8.png");
-        put("9", "w9.gif");
-        put("10", "tmc.gif");
+        put("9", "w9.png");
+        put("10", "tmc.png");
         put("11", "nt1.png");
-        put("12", "nrj12.gif");
-        put("13", "lachaineparlementaire.gif");
-        put("14", "france4.gif");
-        put("15", "bfmtv.gif");
-        put("16", "itele.gif");
+        put("12", "nrj12.png");
+        put("13", "lachaineparlementaire.png");
+        put("14", "france4.png");
+        put("15", "bfmtv.png");
+        put("16", "itele.png");
         put("17", "d17.png");
-        put("18", "gulli.gif");
-        put("999", "franceo.gif");
+        put("18", "gulli.png");
+        put("999", "franceo.png");
     }};
 
     public String getId() {
