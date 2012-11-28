@@ -1,7 +1,9 @@
 package fr.ybo.ybotv.android.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import fr.ybo.ybotv.android.service.YboTvService;
 import fr.ybo.ybotv.android.util.TacheAvecGestionErreurReseau;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class LoadingActivity extends SherlockActivity {
 
@@ -25,25 +28,47 @@ public class LoadingActivity extends SherlockActivity {
 
     private Handler handler = new Handler();
 
+
+
+    private boolean mustUpdate(LastUpdate lastUpdate) {
+        Date date = new Date();
+
+        long timeSinceLastUpdate = date.getTime() - lastUpdate.getLastUpdate().getTime();
+        long twoDays = TimeUnit.DAYS.toMillis(2);
+
+        Log.d(YboTvApplication.TAG, "timeSinceLastUpdate : " + timeSinceLastUpdate);
+        Log.d(YboTvApplication.TAG, "twoDays : " + twoDays);
+
+        return (timeSinceLastUpdate > twoDays);
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);
+
+
         messageLoading = (TextView) findViewById(R.id.messageLoading);
         loadingBar = (ProgressBar) findViewById(R.id.loadingBar);
 
         getSupportActionBar().setTitle(R.string.loading);
 
-        loadDatas();
-    }
+        YboTvDatabase database = ((YboTvApplication) getApplication()).getDatabase();
+        LastUpdate lastUpdate = database.selectSingle(new LastUpdate());
+        Log.d(YboTvApplication.TAG, "lastUpdate : " + lastUpdate);
+        if (lastUpdate == null || mustUpdate(lastUpdate)) {
+            loadDatas();
+        } else {
+            finish();
+            startActivity(new Intent(this, NowActivity.class));
+        }
 
-    private void loadDatas() {
-        loadChannel();
     }
 
 
     @SuppressWarnings("unchecked")
-    private void loadChannel() {
+    private void loadDatas() {
         messageLoading.setText(R.string.getChannels);
         new TacheAvecGestionErreurReseau(this) {
 
@@ -140,6 +165,7 @@ public class LoadingActivity extends SherlockActivity {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 finish();
+                startActivity(new Intent(LoadingActivity.this, NowActivity.class));
             }
         }.execute();
     }
