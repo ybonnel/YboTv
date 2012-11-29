@@ -18,6 +18,7 @@
         <activity android:name=".activity.CeSoirActivity"/>
         <activity android:name=".activity.ParChaineActivity"/>
         <activity android:name=".activity.NowActivity"/>
+        <activity android:name=".activity.ProgrammeActivity"/>
     </application>
 
 </manifest>

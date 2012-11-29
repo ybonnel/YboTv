@@ -4,11 +4,16 @@ package fr.ybo.ybotv.android.activity;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import fr.ybo.ybotv.android.YboTvApplication;
 import fr.ybo.ybotv.android.adapter.ProgrammeAdapter;
 import fr.ybo.ybotv.android.modele.ChannelWithProgramme;
+import fr.ybo.ybotv.android.modele.Programme;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,12 +29,23 @@ public class ListProgrammeManager {
     private final GetProgramme getProgramme;
     private final ProgrammeAdapter adapter;
     private List<ChannelWithProgramme> channels = new ArrayList<ChannelWithProgramme>();
+    private Context context;
 
     public ListProgrammeManager(ListView listView, Activity context, GetProgramme getProgramme) {
         this.getProgramme = getProgramme;
         this.adapter = new ProgrammeAdapter(context, channels);
+        this.context = context;
         listView.setAdapter(adapter);
         listView.setTextFilterEnabled(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Programme programme = channels.get(position).getProgramme();
+                Intent intent = new Intent(ListProgrammeManager.this.context, ProgrammeActivity.class);
+                intent.putExtra("programme", (Parcelable)programme);
+                ListProgrammeManager.this.context.startActivity(intent);
+            }
+        });
         context.registerForContextMenu(listView);
     }
 

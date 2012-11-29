@@ -1,6 +1,8 @@
 package fr.ybo.ybotv.android.modele;
 
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import fr.ybo.database.annotation.Column;
 import fr.ybo.database.annotation.Entity;
@@ -14,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Entity
-public class Programme implements Serializable {
+public class Programme implements Serializable, Parcelable {
 
     @Column
     @PrimaryKey
@@ -254,4 +256,53 @@ public class Programme implements Serializable {
 
         return programmes;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(start);
+        parcel.writeString(stop);
+        parcel.writeString(channel);
+        parcel.writeString(date);
+        parcel.writeString(icon);
+        parcel.writeString(title);
+        parcel.writeString(subTitle);
+        parcel.writeString(desc);
+        parcel.writeString(episodeNum);
+        parcel.writeString(starRating);
+    }
+
+    public Programme() {
+    }
+
+    public Programme(Parcel in) {
+        id = in.readString();
+        start = in.readString();
+        stop = in.readString();
+        channel = in.readString();
+        date = in.readString();
+        icon = in.readString();
+        title = in.readString();
+        subTitle = in.readString();
+        desc = in.readString();
+        episodeNum = in.readString();
+        starRating = in.readString();
+    }
+
+    public static final Creator<Programme> CREATOR = new Creator<Programme>() {
+        @Override
+        public Programme createFromParcel(Parcel parcel) {
+            return new Programme(parcel);
+        }
+
+        @Override
+        public Programme[] newArray(int size) {
+            return new Programme[size];
+        }
+    };
 }
