@@ -14,4 +14,6 @@
     <string name="primeTime">Prime Time</string>
     <string name="partie2">2ème partie</string>
     <string name="finSoiree">Fin de soirée</string>
+
+    <string name="rate">Note</string>
 </resources>
