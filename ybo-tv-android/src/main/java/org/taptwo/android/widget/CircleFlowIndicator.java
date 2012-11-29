@@ -65,8 +65,6 @@ public class CircleFlowIndicator extends View implements FlowIndicator,
     private int flowWidth = 0;
     private FadeTimer timer;
     public AnimationListener animationListener = this;
-    private Animation animation;
-    private boolean mCentered = false;
 
     /**
      * Default constructor
@@ -116,8 +114,6 @@ public class CircleFlowIndicator extends View implements FlowIndicator,
 
         // Retrieve the fade out time
         fadeOutTime = a.getInt(R.styleable.CircleFlowIndicator_fadeOut, 0);
-
-        mCentered = a.getBoolean(R.styleable.CircleFlowIndicator_centered, false);
 
         initColors(activeColor, inactiveColor, activeType, inactiveType);
     }
@@ -239,7 +235,7 @@ public class CircleFlowIndicator extends View implements FlowIndicator,
      * @return The width of the view, honoring constraints from measureSpec
      */
     private int measureWidth(int measureSpec) {
-        int result = 0;
+        int result;
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
 
@@ -271,7 +267,7 @@ public class CircleFlowIndicator extends View implements FlowIndicator,
      * @return The height of the view, honoring constraints from measureSpec
      */
     private int measureHeight(int measureSpec) {
-        int result = 0;
+        int result;
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
 
@@ -318,7 +314,7 @@ public class CircleFlowIndicator extends View implements FlowIndicator,
         // Only set the timer if we have a timeout of at least 1 millisecond
         if (fadeOutTime > 0) {
             // Check if we need to create a new timer
-            if (timer == null || timer._run == false) {
+            if (timer == null || !timer._run) {
                 // Create and start a new timer
                 timer = new FadeTimer();
                 timer.execute();
@@ -367,7 +363,7 @@ public class CircleFlowIndicator extends View implements FlowIndicator,
 
         @Override
         protected void onPostExecute(Void result) {
-            animation = AnimationUtils.loadAnimation(getContext(),
+            Animation animation = AnimationUtils.loadAnimation(getContext(),
                     android.R.anim.fade_out);
             animation.setAnimationListener(animationListener);
             startAnimation(animation);

@@ -19,6 +19,7 @@
                    android:layout_alignParentLeft="true"
                    android:gravity="center_vertical|left"
                    android:src="@drawable/loading"
+                   android:contentDescription="@string/loading"
                 />
 
         <TextView android:id="@+id/programme_title"

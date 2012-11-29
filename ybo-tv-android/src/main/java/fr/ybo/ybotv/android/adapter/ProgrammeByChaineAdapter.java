@@ -21,13 +21,11 @@ public class ProgrammeByChaineAdapter extends BaseAdapter {
     private final List<Programme> programmes;
     private final LayoutInflater inflater;
     private ImageLoader imageLoader;
-    private Context context;
 
     public ProgrammeByChaineAdapter(Context context, List<Programme> programmes) {
         this.programmes = programmes;
         inflater = LayoutInflater.from(context);
         imageLoader=new ImageLoader(context.getApplicationContext());
-        this.context = context;
     }
 
     @Override

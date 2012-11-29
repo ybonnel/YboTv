@@ -21,15 +21,11 @@ public class ListProgrammeManager {
         List<ChannelWithProgramme> getProgrammes();
     }
 
-    private final ListView listView;
-    private final Context context;
     private final GetProgramme getProgramme;
     private final ProgrammeAdapter adapter;
     private List<ChannelWithProgramme> channels = new ArrayList<ChannelWithProgramme>();
 
     public ListProgrammeManager(ListView listView, Activity context, GetProgramme getProgramme) {
-        this.listView = listView;
-        this.context = context;
         this.getProgramme = getProgramme;
         this.adapter = new ProgrammeAdapter(context, channels);
         listView.setAdapter(adapter);

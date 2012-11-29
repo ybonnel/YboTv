@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello ybo-tv-android!</string>
     <string name="app_name">YboTv</string>
     <string name="now">Maintenant</string>
     <string name="cesoir">Ce soir</string>

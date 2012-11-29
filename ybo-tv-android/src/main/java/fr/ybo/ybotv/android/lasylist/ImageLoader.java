@@ -63,7 +63,6 @@ public class ImageLoader {
 
         //from web
         try {
-            Bitmap bitmap = null;
             URL imageUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
             conn.setConnectTimeout(30000);
@@ -73,8 +72,7 @@ public class ImageLoader {
             OutputStream os = new FileOutputStream(f);
             Utils.CopyStream(is, os);
             os.close();
-            bitmap = decodeFile(f);
-            return bitmap;
+            return decodeFile(f);
         } catch (Throwable ex) {
             ex.printStackTrace();
             if (ex instanceof OutOfMemoryError)
@@ -112,7 +110,7 @@ public class ImageLoader {
             Bitmap bitmap = BitmapFactory.decodeStream(stream2, null, o2);
             stream2.close();
             return bitmap;
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException ignore) {
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -157,9 +155,7 @@ public class ImageLoader {
 
     boolean imageViewReused(PhotoToLoad photoToLoad) {
         String tag = imageViews.get(photoToLoad.imageView);
-        if (tag == null || !tag.equals(photoToLoad.url))
-            return true;
-        return false;
+        return tag == null || !tag.equals(photoToLoad.url);
     }
 
     //Used to display bitmap in the UI thread

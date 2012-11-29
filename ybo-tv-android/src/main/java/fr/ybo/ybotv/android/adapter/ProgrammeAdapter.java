@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import fr.ybo.ybotv.android.exception.YboTvException;
 import fr.ybo.ybotv.android.lasylist.ImageLoader;
 import fr.ybo.ybotv.android.R;
 import fr.ybo.ybotv.android.modele.ChannelWithProgramme;
@@ -21,13 +22,11 @@ public class ProgrammeAdapter extends BaseAdapter {
     private final List<ChannelWithProgramme> programmes;
     private final LayoutInflater inflater;
     private ImageLoader imageLoader;
-    private Context context;
 
     public ProgrammeAdapter(Context context, List<ChannelWithProgramme> programmes) {
         this.programmes = programmes;
         inflater = LayoutInflater.from(context);
         imageLoader=new ImageLoader(context.getApplicationContext());
-        this.context = context;
     }
 
     @Override
@@ -69,10 +68,6 @@ public class ProgrammeAdapter extends BaseAdapter {
         }
 
         ChannelWithProgramme currentProgramme = getItem(position);
-
-        if (currentProgramme == null || currentProgramme.getProgramme() == null) {
-            Log.e("YboTv", "CurrentProgramme : " + currentProgramme);
-        }
 
         holder.horaires.setText(currentProgramme.getProgramme().getHoraires());
         holder.title.setText(currentProgramme.getProgramme().getTitle());

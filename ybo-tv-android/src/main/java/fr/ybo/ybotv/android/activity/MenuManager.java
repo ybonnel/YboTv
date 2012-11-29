@@ -3,6 +3,7 @@ package fr.ybo.ybotv.android.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.SparseArray;
 import android.widget.ArrayAdapter;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
@@ -10,14 +11,12 @@ import com.actionbarsherlock.app.SherlockListActivity;
 import fr.ybo.ybotv.android.R;
 import fr.ybo.ybotv.android.util.ArraysUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class MenuManager implements ActionBar.OnNavigationListener {
 
     public static interface MenuManagerInterface {
 
         abstract int getMenuIdOfClass();
+
         abstract ActionBar getSupportActionBar();
     }
 
@@ -51,7 +50,7 @@ public class MenuManager implements ActionBar.OnNavigationListener {
         }
     }
 
-    private final static Map<Integer, Class<? extends MenuManagerInterface>> mapOfActivity = new HashMap<Integer, Class<? extends MenuManagerInterface>>(){{
+    private final static SparseArray<Class<? extends MenuManagerInterface>> arrayOfActivity = new SparseArray<Class<? extends MenuManagerInterface>>() {{
         put(R.id.menu_now, NowActivity.class);
         put(R.id.menu_cesoir, CeSoirActivity.class);
         put(R.id.menu_parchaine, ParChaineActivity.class);
@@ -82,7 +81,7 @@ public class MenuManager implements ActionBar.OnNavigationListener {
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        startActivityIfNotAlreadyIn(mapOfActivity.get(menuIds[itemPosition]));
+        startActivityIfNotAlreadyIn(arrayOfActivity.get(menuIds[itemPosition]));
         return true;
     }
 

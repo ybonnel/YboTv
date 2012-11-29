@@ -72,6 +72,7 @@ public class TitleFlowIndicator extends TextView implements FlowIndicator {
     public TitleFlowIndicator(Context context) {
         super(context);
         initDraw(TEXT_COLOR, TEXT_SIZE, SELECTED_COLOR, SELECTED_BOLD, TEXT_SIZE, FOOTER_LINE_HEIGHT, FOOTER_COLOR);
+        path = new Path();
     }
 
     /**
@@ -108,6 +109,7 @@ public class TitleFlowIndicator extends TextView implements FlowIndicator {
             typeface = getTypefaceByIndex(typefaceIndex);
         typeface = Typeface.create(typeface, textStyleIndex);
 
+        path = new Path();
     }
 
     /**
@@ -219,7 +221,7 @@ public class TitleFlowIndicator extends TextView implements FlowIndicator {
         }
 
         // Draw the footer line
-        path = new Path();
+        path.reset();
         int coordY = getHeight() - 1;
         coordY -= (footerLineHeight % 2 == 1) ? footerLineHeight / 2 : footerLineHeight / 2 - 1;
         path.moveTo(0, coordY);
@@ -227,7 +229,7 @@ public class TitleFlowIndicator extends TextView implements FlowIndicator {
         path.close();
         canvas.drawPath(path, paintFooterLine);
         // Draw the footer triangle
-        path = new Path();
+        path.reset();
         path.moveTo(getWidth() / 2, getHeight() - footerLineHeight - footerTriangleHeight);
         path.lineTo(getWidth() / 2 + footerTriangleHeight, getHeight() - footerLineHeight);
         path.lineTo(getWidth() / 2 - footerTriangleHeight, getHeight() - footerLineHeight);
@@ -254,7 +256,7 @@ public class TitleFlowIndicator extends TextView implements FlowIndicator {
      * @param curViewWidth width of the view.
      */
     private void clipViewOnTheLeft(Rect curViewBound, int curViewWidth) {
-        curViewBound.left = 0 + (int) clipPadding;
+        curViewBound.left = (int) clipPadding;
         curViewBound.right = curViewWidth;
     }
 
@@ -380,15 +382,13 @@ public class TitleFlowIndicator extends TextView implements FlowIndicator {
      * @return The width of the view, honoring constraints from measureSpec
      */
     private int measureWidth(int measureSpec) {
-        int result = 0;
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
 
         if (specMode != MeasureSpec.EXACTLY) {
             throw new IllegalStateException("ViewFlow can only be used in EXACTLY mode.");
         }
-        result = specSize;
-        return result;
+        return specSize;
     }
 
     /**
@@ -398,7 +398,7 @@ public class TitleFlowIndicator extends TextView implements FlowIndicator {
      * @return The height of the view, honoring constraints from measureSpec
      */
     private int measureHeight(int measureSpec) {
-        int result = 0;
+        int result;
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
 
