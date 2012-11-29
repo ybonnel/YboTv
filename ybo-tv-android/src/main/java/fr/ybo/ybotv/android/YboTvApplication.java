@@ -20,6 +20,12 @@ public class YboTvApplication extends Application {
                 .detectAll()
                 .penaltyLog()
                 .penaltyDeath()
+                .build());
+
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .penaltyDeath()
                 .build());*/
     }
 
