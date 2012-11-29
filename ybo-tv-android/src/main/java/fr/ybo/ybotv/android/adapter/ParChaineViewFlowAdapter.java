@@ -80,6 +80,20 @@ public class ParChaineViewFlowAdapter extends BaseAdapter implements TitleProvid
         ListView listView = (ListView) convertView.findViewById(android.R.id.list);
         List<Programme> programmes = Programme.getProgrammes((YboTvApplication) context.getApplication(), getItem(position));
         listView.setAdapter(new ProgrammeByChaineAdapter(context, programmes));
+        int currentPosition = 0;
+        String currentDate = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        for (Programme programme : programmes) {
+            if (currentDate.compareTo(programme.getStart()) >= 0
+                    && currentDate.compareTo(programme.getStop()) < 0) {
+                break;
+            }
+            currentPosition++;
+        }
+
+        if (currentPosition < programmes.size()) {
+            listView.setSelection(currentPosition);
+        }
+
         listView.setTextFilterEnabled(true);
         listView.setOnItemClickListener(new ProgrammeOnItemClickListener(programmes, context));
         context.registerForContextMenu(listView);
