@@ -4,11 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
-import fr.ybo.ybotv.android.R;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -25,26 +21,19 @@ public class ImageLoader {
     FileCache fileCache;
     private Map<ImageView, String> imageViews = Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
     ExecutorService executorService;
-    Animation animation;
 
     public ImageLoader(Context context) {
         fileCache = new FileCache(context);
         executorService = Executors.newFixedThreadPool(5);
-        animation = AnimationUtils.loadAnimation(context, R.anim.rotate_picture);
     }
-
-    final int stub_id = R.drawable.loading;
 
     public void DisplayImage(String url, ImageView imageView) {
         imageViews.put(imageView, url);
         Bitmap bitmap = memoryCache.get(url);
         if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
-            imageView.setAnimation(null);
         } else {
             queuePhoto(url, imageView);
-            imageView.setImageResource(stub_id);
-            imageView.startAnimation(animation);
         }
     }
 
@@ -173,10 +162,6 @@ public class ImageLoader {
                 return;
             if (bitmap != null) {
                 photoToLoad.imageView.setImageBitmap(bitmap);
-                photoToLoad.imageView.setAnimation(null);
-            } else {
-                photoToLoad.imageView.setImageResource(stub_id);
-                photoToLoad.imageView.startAnimation(animation);
             }
         }
     }

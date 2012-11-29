@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -72,6 +74,7 @@ public class ProgrammeByChaineAdapter extends BaseAdapter {
         holder.title.setText(currentProgramme.getTitle());
 
         if (currentProgramme.getIcon() != null && currentProgramme.getIcon().length() > 0) {
+            holder.iconeChaine.setImageResource(R.drawable.loading);
             imageLoader.DisplayImage(currentProgramme.getIcon(), holder.iconeChaine);
             holder.iconeChaine.setVisibility(View.VISIBLE);
         } else {
