@@ -31,19 +31,24 @@ public class Programme implements Serializable, Parcelable {
     @Indexed
     private String channel;
     @Column
-    private String date;
-    @Column
     private String icon;
     @Column
     private String title;
     @Column
-    private String subTitle;
-    @Column
     private String desc;
     @Column
-    private String episodeNum;
-    @Column
     private String starRating;
+    @Column
+    private String csaRating;
+
+
+    private Map<String, String> ratings;
+
+    public void fillCsaRating() {
+        if (ratings != null && ratings.containsKey("CSA")) {
+            csaRating = ratings.get("CSA");
+        }
+    }
 
     public String getHoraires() {
 
@@ -92,14 +97,6 @@ public class Programme implements Serializable, Parcelable {
         this.channel = channel;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getIcon() {
         return icon;
     }
@@ -116,14 +113,6 @@ public class Programme implements Serializable, Parcelable {
         this.title = title;
     }
 
-    public String getSubTitle() {
-        return subTitle;
-    }
-
-    public void setSubTitle(String subTitle) {
-        this.subTitle = subTitle;
-    }
-
     public String getDesc() {
         return desc;
     }
@@ -132,20 +121,20 @@ public class Programme implements Serializable, Parcelable {
         this.desc = desc;
     }
 
-    public String getEpisodeNum() {
-        return episodeNum;
-    }
-
-    public void setEpisodeNum(String episodeNum) {
-        this.episodeNum = episodeNum;
-    }
-
     public String getStarRating() {
         return starRating;
     }
 
     public void setStarRating(String starRating) {
         this.starRating = starRating;
+    }
+
+    public String getCsaRating() {
+        return csaRating;
+    }
+
+    public void setCsaRating(String csaRating) {
+        this.csaRating = csaRating;
     }
 
     @Override
@@ -192,13 +181,11 @@ public class Programme implements Serializable, Parcelable {
         sqlQuery.append("Programme.id as programmeId, ");
         sqlQuery.append("Programme.start as programmeStart, ");
         sqlQuery.append("Programme.stop as programmeStop, ");
-        sqlQuery.append("Programme.date as programmeDate, ");
         sqlQuery.append("Programme.icon as programmeIcon, ");
         sqlQuery.append("Programme.title as programmeTitle, ");
-        sqlQuery.append("Programme.subTitle as programmeSubTitle, ");
         sqlQuery.append("Programme.desc as programmeDesc, ");
-        sqlQuery.append("Programme.episodeNum as programmeEpisodeNum, ");
-        sqlQuery.append("Programme.starRating as programmeStarRating ");
+        sqlQuery.append("Programme.starRating as programmeStarRating, ");
+        sqlQuery.append("Programme.csaRating as programmeCsaRating ");
 
         sqlQuery.append("FROM Programme ");
         sqlQuery.append("WHERE ");
@@ -226,13 +213,11 @@ public class Programme implements Serializable, Parcelable {
         int programmeIdCol = cursor.getColumnIndex("programmeId");
         int programmeStartCol = cursor.getColumnIndex("programmeStart");
         int programmeStopCol = cursor.getColumnIndex("programmeStop");
-        int programmeDateCol = cursor.getColumnIndex("programmeDate");
         int programmeIconCol = cursor.getColumnIndex("programmeIcon");
         int programmeTitleCol = cursor.getColumnIndex("programmeTitle");
-        int programmeSubTitleCol = cursor.getColumnIndex("programmeSubTitle");
         int programmeDescCol = cursor.getColumnIndex("programmeDesc");
-        int programmeEpisodeNumCol = cursor.getColumnIndex("programmeEpisodeNum");
         int programmeStarRatingCol = cursor.getColumnIndex("programmeStarRating");
+        int programmeCsaRatingCol = cursor.getColumnIndex("programmeCsaRating");
 
         while (cursor.moveToNext()) {
 
@@ -240,13 +225,11 @@ public class Programme implements Serializable, Parcelable {
             oneProgramme.setId(cursor.getString(programmeIdCol));
             oneProgramme.setStart(cursor.getString(programmeStartCol));
             oneProgramme.setStop(cursor.getString(programmeStopCol));
-            oneProgramme.setDate(cursor.getString(programmeDateCol));
             oneProgramme.setIcon(cursor.getString(programmeIconCol));
             oneProgramme.setTitle(cursor.getString(programmeTitleCol));
-            oneProgramme.setSubTitle(cursor.getString(programmeSubTitleCol));
             oneProgramme.setDesc(cursor.getString(programmeDescCol));
-            oneProgramme.setEpisodeNum(cursor.getString(programmeEpisodeNumCol));
             oneProgramme.setStarRating(cursor.getString(programmeStarRatingCol));
+            oneProgramme.setCsaRating(cursor.getString(programmeCsaRatingCol));
             oneProgramme.setChannel(channel.getId());
 
             programmes.add(oneProgramme);
@@ -268,13 +251,11 @@ public class Programme implements Serializable, Parcelable {
         parcel.writeString(start);
         parcel.writeString(stop);
         parcel.writeString(channel);
-        parcel.writeString(date);
         parcel.writeString(icon);
         parcel.writeString(title);
-        parcel.writeString(subTitle);
         parcel.writeString(desc);
-        parcel.writeString(episodeNum);
         parcel.writeString(starRating);
+        parcel.writeString(csaRating);
     }
 
     public Programme() {
@@ -285,13 +266,11 @@ public class Programme implements Serializable, Parcelable {
         start = in.readString();
         stop = in.readString();
         channel = in.readString();
-        date = in.readString();
         icon = in.readString();
         title = in.readString();
-        subTitle = in.readString();
         desc = in.readString();
-        episodeNum = in.readString();
         starRating = in.readString();
+        csaRating = in.readString();
     }
 
     public static final Creator<Programme> CREATOR = new Creator<Programme>() {

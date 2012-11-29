@@ -2,6 +2,7 @@ package fr.ybo.ybotv.android.activity;
 
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,11 +10,9 @@ import com.actionbarsherlock.app.SherlockActivity;
 import fr.ybo.ybotv.android.R;
 import fr.ybo.ybotv.android.YboTvApplication;
 import fr.ybo.ybotv.android.lasylist.ImageLoader;
-import fr.ybo.ybotv.android.modele.ChannelWithProgramme;
 import fr.ybo.ybotv.android.modele.Programme;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ProgrammeActivity extends SherlockActivity {
@@ -23,6 +22,13 @@ public class ProgrammeActivity extends SherlockActivity {
         put("2/4", R.drawable.rating_2star);
         put("3/4", R.drawable.rating_3star);
         put("4/4", R.drawable.rating_4star);
+    }};
+
+    private final static Map<String, Integer> mapOfCsaRatings = new HashMap<String, Integer>(){{
+        put("-18", R.drawable.moins18);
+        put("-16", R.drawable.moins16);
+        put("-12", R.drawable.moins12);
+        put("-10", R.drawable.moins10);
     }};
 
 
@@ -35,6 +41,7 @@ public class ProgrammeActivity extends SherlockActivity {
 
         ImageView icon = (ImageView) findViewById(R.id.programme_activity_icon);
         ImageView rating = (ImageView) findViewById(R.id.programme_activity_rating);
+        ImageView csaRating = (ImageView) findViewById(R.id.programme_activity_csa_rating);
         TextView title = (TextView) findViewById(R.id.programme_activity_title);
         TextView description = (TextView) findViewById(R.id.programme_activity_description);
 
@@ -50,6 +57,14 @@ public class ProgrammeActivity extends SherlockActivity {
             rating.setVisibility(View.VISIBLE);
         } else {
             rating.setVisibility(View.GONE);
+        }
+        Log.d(YboTvApplication.TAG, "CsaRating : " + programme.getCsaRating());
+        if (programme.getCsaRating() != null
+                && mapOfCsaRatings.containsKey(programme.getCsaRating())) {
+            csaRating.setImageResource(mapOfCsaRatings.get(programme.getCsaRating()));
+            csaRating.setVisibility(View.VISIBLE);
+        } else {
+            csaRating.setVisibility(View.GONE);
         }
         title.setText(programme.getTitle());
         if (programme.getDesc() != null) {

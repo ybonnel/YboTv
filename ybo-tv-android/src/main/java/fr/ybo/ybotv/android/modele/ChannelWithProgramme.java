@@ -45,13 +45,11 @@ public class ChannelWithProgramme {
         sqlQuery.append("Programme.id as programmeId, ");
         sqlQuery.append("Programme.start as programmeStart, ");
         sqlQuery.append("Programme.stop as programmeStop, ");
-        sqlQuery.append("Programme.date as programmeDate, ");
         sqlQuery.append("Programme.icon as programmeIcon, ");
         sqlQuery.append("Programme.title as programmeTitle, ");
-        sqlQuery.append("Programme.subTitle as programmeSubTitle, ");
         sqlQuery.append("Programme.desc as programmeDesc, ");
-        sqlQuery.append("Programme.episodeNum as programmeEpisodeNum, ");
-        sqlQuery.append("Programme.starRating as programmeStarRating ");
+        sqlQuery.append("Programme.starRating as programmeStarRating, ");
+        sqlQuery.append("Programme.csaRating as programmeCsaRating ");
 
         sqlQuery.append("FROM Channel, Programme ");
         sqlQuery.append("WHERE ");
@@ -79,13 +77,11 @@ public class ChannelWithProgramme {
         int programmeIdCol = cursor.getColumnIndex("programmeId");
         int programmeStartCol = cursor.getColumnIndex("programmeStart");
         int programmeStopCol = cursor.getColumnIndex("programmeStop");
-        int programmeDateCol = cursor.getColumnIndex("programmeDate");
         int programmeIconCol = cursor.getColumnIndex("programmeIcon");
         int programmeTitleCol = cursor.getColumnIndex("programmeTitle");
-        int programmeSubTitleCol = cursor.getColumnIndex("programmeSubTitle");
         int programmeDescCol = cursor.getColumnIndex("programmeDesc");
-        int programmeEpisodeNumCol = cursor.getColumnIndex("programmeEpisodeNum");
         int programmeStarRatingCol = cursor.getColumnIndex("programmeStarRating");
+        int programmeCsaRatingCol = cursor.getColumnIndex("programmeCsaRating");
 
         while (cursor.moveToNext()) {
             ChannelWithProgramme oneChannelWithProgramme = new ChannelWithProgramme();
@@ -100,13 +96,11 @@ public class ChannelWithProgramme {
             oneProgramme.setId(cursor.getString(programmeIdCol));
             oneProgramme.setStart(cursor.getString(programmeStartCol));
             oneProgramme.setStop(cursor.getString(programmeStopCol));
-            oneProgramme.setDate(cursor.getString(programmeDateCol));
             oneProgramme.setIcon(cursor.getString(programmeIconCol));
             oneProgramme.setTitle(cursor.getString(programmeTitleCol));
-            oneProgramme.setSubTitle(cursor.getString(programmeSubTitleCol));
             oneProgramme.setDesc(cursor.getString(programmeDescCol));
-            oneProgramme.setEpisodeNum(cursor.getString(programmeEpisodeNumCol));
             oneProgramme.setStarRating(cursor.getString(programmeStarRatingCol));
+            oneProgramme.setCsaRating(cursor.getString(programmeCsaRatingCol));
             oneProgramme.setChannel(oneChannel.getId());
 
             oneChannelWithProgramme.setProgramme(oneProgramme);

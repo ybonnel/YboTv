@@ -97,6 +97,7 @@ public class LoadingActivity extends SherlockActivity {
                     for (Programme programme : YboTvService.getInstance().getProgrammes(channel)) {
 
                         if (!programeIds.contains(programme.getId())) {
+                            programme.fillCsaRating();
                             programmesToInsert.add(programme);
                             programeIds.add(programme.getId());
                         }
@@ -140,6 +141,15 @@ public class LoadingActivity extends SherlockActivity {
                     @Override
                     public void run() {
                         messageLoading.setText(R.string.loadingProgrammes);
+                    }
+                });
+
+                count++;
+                final int progress = 100 * count / (nbChaines + 2);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingBar.setProgress(progress);
                     }
                 });
 
