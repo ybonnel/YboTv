@@ -23,37 +23,53 @@ RootController.$inject = [ '$scope'];
 
 
 /* Controllers */
-function NowController($scope, ChannelService, ProgrammeService, $log, $location) {
+function NowController($scope, ChannelService, ProgrammeService, $log, $location, $window) {
+    $scope.$on('$viewContentLoaded', function(event) {
+        $window._gaq.push(['_trackPageView', $location.path()]);
+    });
+
     var sdf = new JsSimpleDateFormat("yyyyMMddHHmmss");
     var now = sdf.format(new Date());
     $scope.channels = ProgrammeService.getByDate(now);
     $scope.activeTab('#now');
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-NowController.$inject = ['$scope', 'ChannelService', 'ProgrammeService', '$log', '$location'];
+NowController.$inject = ['$scope', 'ChannelService', 'ProgrammeService', '$log', '$location', '$window'];
 
 /* Controllers */
-function PrimeTimeController($scope, ChannelService, ProgrammeService, $log, $location) {
+function PrimeTimeController($scope, ChannelService, ProgrammeService, $log, $location, $window) {
+    $scope.$on('$viewContentLoaded', function(event) {
+        $window._gaq.push(['_trackPageView', $location.path()]);
+    });
+
     var sdf = new JsSimpleDateFormat("yyyyMMdd");
     var now = sdf.format(new Date()) + '210000';
     $scope.channels = ProgrammeService.getByDate(now);
     $scope.activeTab('#primetime');
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-PrimeTimeController.$inject = ['$scope', 'ChannelService', 'ProgrammeService', '$log', '$location'];
+PrimeTimeController.$inject = ['$scope', 'ChannelService', 'ProgrammeService', '$log', '$location', '$window'];
 
 /* Controllers */
-function Partie2Controller($scope, ChannelService, ProgrammeService, $log, $location) {
+function Partie2Controller($scope, ChannelService, ProgrammeService, $log, $location, $window) {
+    $scope.$on('$viewContentLoaded', function(event) {
+        $window._gaq.push(['_trackPageView', $location.path()]);
+    });
+
     var sdf = new JsSimpleDateFormat("yyyyMMdd");
     var now = sdf.format(new Date()) + '230000';
     $scope.channels = ProgrammeService.getByDate(now);
     $scope.activeTab('#partie2');
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-Partie2Controller.$inject = ['$scope', 'ChannelService', 'ProgrammeService', '$log', '$location'];
+Partie2Controller.$inject = ['$scope', 'ChannelService', 'ProgrammeService', '$log', '$location', '$window'];
 
 /* Controllers */
-function FinSoireeController($scope, ChannelService, ProgrammeService, $log, $location) {
+function FinSoireeController($scope, ChannelService, ProgrammeService, $log, $location, $window) {
+    $scope.$on('$viewContentLoaded', function(event) {
+        $window._gaq.push(['_trackPageView', $location.path()]);
+    });
+
     var sdf = new JsSimpleDateFormat("yyyyMMdd");
     var today = new Date();
     var tomorrow = new Date();
@@ -67,9 +83,13 @@ function FinSoireeController($scope, ChannelService, ProgrammeService, $log, $lo
     $scope.activeTab('#finsoiree');
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-FinSoireeController.$inject = ['$scope', 'ChannelService', 'ProgrammeService', '$log', '$location'];
+FinSoireeController.$inject = ['$scope', 'ChannelService', 'ProgrammeService', '$log', '$location', '$window'];
 
-function ChaineController($scope, ChannelService, ProgrammeService, $routeParams, $log) {
+function ChaineController($scope, ChannelService, ProgrammeService, $routeParams, $log, $location, $window) {
+    $scope.$on('$viewContentLoaded', function(event) {
+        $window._gaq.push(['_trackPageView', $location.path()]);
+    });
+
 
     $scope.chaineCourante = $routeParams.idChaine;
 
@@ -97,4 +117,4 @@ function ChaineController($scope, ChannelService, ProgrammeService, $routeParams
     $scope.activeTab('#chaines');
 }
 
-ChaineController.$inject = ['$scope', 'ChannelService', 'ProgrammeService', '$routeParams', '$log'];
+ChaineController.$inject = ['$scope', 'ChannelService', 'ProgrammeService', '$routeParams', '$log', '$location', '$window'];
