@@ -5,7 +5,10 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.StrictMode;
 import fr.ybo.ybotv.android.database.YboTvDatabase;
+import org.acra.ACRA;
+import org.acra.annotation.ReportsCrashes;
 
+@ReportsCrashes(formKey = "dDBLNm5ZR2dLWFhyQTV0dDMtTDdFZVE6MQ")
 public class YboTvApplication extends Application {
 
 
@@ -15,6 +18,7 @@ public class YboTvApplication extends Application {
 
     @Override
     public void onCreate() {
+        ACRA.init(this);
         super.onCreate();
         database = new YboTvDatabase(this);
         /*StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
