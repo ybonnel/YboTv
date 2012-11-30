@@ -24,9 +24,7 @@ RootController.$inject = [ '$scope'];
 
 /* Controllers */
 function NowController($scope, ChannelService, ProgrammeService, $log, $location, $window) {
-    $scope.$on('$viewContentLoaded', function(event) {
-        $window._gaq.push(['_trackPageView', $location.path()]);
-    });
+    $window._gaq.push(['_trackPageView', $location.path()]);
 
     var sdf = new JsSimpleDateFormat("yyyyMMddHHmmss");
     var now = sdf.format(new Date());
@@ -38,9 +36,7 @@ NowController.$inject = ['$scope', 'ChannelService', 'ProgrammeService', '$log',
 
 /* Controllers */
 function PrimeTimeController($scope, ChannelService, ProgrammeService, $log, $location, $window) {
-    $scope.$on('$viewContentLoaded', function(event) {
-        $window._gaq.push(['_trackPageView', $location.path()]);
-    });
+    $window._gaq.push(['_trackPageView', $location.path()]);
 
     var sdf = new JsSimpleDateFormat("yyyyMMdd");
     var now = sdf.format(new Date()) + '210000';
@@ -52,9 +48,7 @@ PrimeTimeController.$inject = ['$scope', 'ChannelService', 'ProgrammeService', '
 
 /* Controllers */
 function Partie2Controller($scope, ChannelService, ProgrammeService, $log, $location, $window) {
-    $scope.$on('$viewContentLoaded', function(event) {
-        $window._gaq.push(['_trackPageView', $location.path()]);
-    });
+    $window._gaq.push(['_trackPageView', $location.path()]);
 
     var sdf = new JsSimpleDateFormat("yyyyMMdd");
     var now = sdf.format(new Date()) + '230000';
@@ -66,9 +60,7 @@ Partie2Controller.$inject = ['$scope', 'ChannelService', 'ProgrammeService', '$l
 
 /* Controllers */
 function FinSoireeController($scope, ChannelService, ProgrammeService, $log, $location, $window) {
-    $scope.$on('$viewContentLoaded', function(event) {
-        $window._gaq.push(['_trackPageView', $location.path()]);
-    });
+    $window._gaq.push(['_trackPageView', $location.path()]);
 
     var sdf = new JsSimpleDateFormat("yyyyMMdd");
     var today = new Date();
@@ -86,10 +78,7 @@ function FinSoireeController($scope, ChannelService, ProgrammeService, $log, $lo
 FinSoireeController.$inject = ['$scope', 'ChannelService', 'ProgrammeService', '$log', '$location', '$window'];
 
 function ChaineController($scope, ChannelService, ProgrammeService, $routeParams, $log, $location, $window) {
-    $scope.$on('$viewContentLoaded', function(event) {
-        $window._gaq.push(['_trackPageView', $location.path()]);
-    });
-
+    $window._gaq.push(['_trackPageView', $location.path()]);
 
     $scope.chaineCourante = $routeParams.idChaine;
 
