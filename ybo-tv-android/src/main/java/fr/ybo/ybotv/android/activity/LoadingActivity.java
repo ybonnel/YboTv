@@ -13,12 +13,8 @@ import com.actionbarsherlock.app.SherlockActivity;
 import fr.ybo.ybotv.android.R;
 import fr.ybo.ybotv.android.YboTvApplication;
 import fr.ybo.ybotv.android.database.YboTvDatabase;
-import fr.ybo.ybotv.android.exception.YboTvErreurReseau;
-import fr.ybo.ybotv.android.modele.Channel;
 import fr.ybo.ybotv.android.modele.LastUpdate;
-import fr.ybo.ybotv.android.modele.Programme;
-import fr.ybo.ybotv.android.service.YboTvService;
-import fr.ybo.ybotv.android.util.TacheAvecGestionErreurReseau;
+import fr.ybo.ybotv.android.util.UpdateProgrammes;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -31,17 +27,13 @@ public class LoadingActivity extends SherlockActivity {
     private Handler handler = new Handler();
 
 
-
     private boolean mustUpdate(LastUpdate lastUpdate) {
         Date date = new Date();
 
         long timeSinceLastUpdate = date.getTime() - lastUpdate.getLastUpdate().getTime();
-        long twoDays = TimeUnit.DAYS.toMillis(2);
+        long fiveDays = TimeUnit.DAYS.toMillis(5);
 
-        Log.d(YboTvApplication.TAG, "timeSinceLastUpdate : " + timeSinceLastUpdate);
-        Log.d(YboTvApplication.TAG, "twoDays : " + twoDays);
-
-        return (timeSinceLastUpdate > twoDays);
+        return (timeSinceLastUpdate > fiveDays);
     }
 
 
@@ -62,7 +54,8 @@ public class LoadingActivity extends SherlockActivity {
             try {
                 PackageInfo _info = getPackageManager().getPackageInfo(getPackageName(), 0);
                 currentVersion = _info.versionName;
-            } catch (PackageManager.NameNotFoundException ignore) {}
+            } catch (PackageManager.NameNotFoundException ignore) {
+            }
 
             ((TextView) findViewById(R.id.loading_version)).setText(getString(R.string.version, currentVersion));
 
@@ -71,6 +64,7 @@ public class LoadingActivity extends SherlockActivity {
         } else {
             finish();
             startActivity(new Intent(this, NowActivity.class));
+            ((YboTvApplication) getApplication()).setRecurringAlarm();
         }
 
     }
@@ -79,110 +73,11 @@ public class LoadingActivity extends SherlockActivity {
     @SuppressWarnings("unchecked")
     private void loadDatas() {
         messageLoading.setText(R.string.getChannels);
-        new TacheAvecGestionErreurReseau(this) {
-
-            @Override
-            protected void myDoBackground() throws YboTvErreurReseau{
-                // Récupération des chaines
-                List<Channel> channels = YboTvService.getInstance().getChannels();
-
-                handler.post(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        messageLoading.setText(R.string.getProgrammes);
-                    }
-                });
-
-                Set<String> programeIds = new HashSet<String>();
-
-                List<Programme> programmesToInsert = new ArrayList<Programme>();
-
-                int count = 0;
-                int nbChaines = channels.size();
-
-                for (Channel channel : channels) {
-
-                    for (Programme programme : YboTvService.getInstance().getProgrammes(channel)) {
-
-                        if (!programeIds.contains(programme.getId())) {
-                            programme.fillCsaRating();
-                            programmesToInsert.add(programme);
-                            programeIds.add(programme.getId());
-                        }
-                    }
-
-                    count++;
-                    final int progress = 100 * count / (nbChaines + 2);
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadingBar.setProgress(progress);
-                        }
-                    });
-                }
-
-
-                handler.post(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        messageLoading.setText(R.string.loadingChannels);
-                    }
-                });
-
-                YboTvDatabase database = ((YboTvApplication) getApplication()).getDatabase();
-                // Suppression des anciennes chaînes.
-                database.deleteAll(Channel.class);
-
-                // insertion des nouvelles chaines
-                try {
-                    database.beginTransaction();
-                    for (Channel channel : channels) {
-                        database.insert(channel);
-                    }
-                } finally {
-                    database.endTransaction();
-                }
-
-                handler.post(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        messageLoading.setText(R.string.loadingProgrammes);
-                    }
-                });
-
-                count++;
-                final int progress = 100 * count / (nbChaines + 2);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadingBar.setProgress(progress);
-                    }
-                });
-
-                // Suppression de tout les programmes.
-                database.deleteAll(Programme.class);
-
-                try {
-                    database.beginTransaction();
-                    for (Programme programme : programmesToInsert) {
-                        database.insert(programme);
-                    }
-                } finally {
-                    database.endTransaction();
-                }
-
-                database.deleteAll(LastUpdate.class);
-                LastUpdate lastUpdate = new LastUpdate();
-                lastUpdate.setLastUpdate(new Date());
-                database.insert(lastUpdate);
-            }
-
+        new UpdateProgrammes(this, handler, loadingBar, messageLoading, ((YboTvApplication) getApplication()).getDatabase()) {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
+                ((YboTvApplication) getApplication()).setRecurringAlarm();
                 finish();
                 startActivity(new Intent(LoadingActivity.this, NowActivity.class));
             }
@@ -205,4 +100,5 @@ public class LoadingActivity extends SherlockActivity {
     public void onBackPressed() {
         // On ne fait rien.
     }
+
 }

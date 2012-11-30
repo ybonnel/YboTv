@@ -34,7 +34,7 @@ public abstract class TacheAvecGestionErreurReseau extends AsyncTask<Void, Void,
 
     @Override
     protected void onPostExecute(Void result) {
-        if (erreurReseau) {
+        if (erreurReseau && context != null) {
             Toast.makeText(context.getApplicationContext(), context.getString(R.string.erreurReseau), Toast.LENGTH_LONG).show();
         }
         super.onPostExecute(result);

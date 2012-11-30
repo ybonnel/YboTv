@@ -19,6 +19,15 @@
         <activity android:name=".activity.ParChaineActivity"/>
         <activity android:name=".activity.NowActivity"/>
         <activity android:name=".activity.ProgrammeActivity"/>
+
+        <receiver android:name=".receiver.AlarmReceiver"/>
+
+        <service android:name=".service.UpdateService" android:exported="false">
+            <intent-filter>
+                <action android:name="fr.ybo.ybotv.android.action.UPDATE"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
