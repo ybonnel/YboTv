@@ -16,6 +16,7 @@ import fr.ybo.ybotv.android.modele.Channel;
 import fr.ybo.ybotv.android.modele.LastUpdate;
 import fr.ybo.ybotv.android.modele.Programme;
 import fr.ybo.ybotv.android.service.YboTvService;
+import fr.ybo.ybotv.android.util.ChangeLogDialog;
 import fr.ybo.ybotv.android.util.TacheAvecGestionErreurReseau;
 
 import java.util.*;
@@ -48,16 +49,15 @@ public class LoadingActivity extends SherlockActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);
 
-
-        messageLoading = (TextView) findViewById(R.id.messageLoading);
-        loadingBar = (ProgressBar) findViewById(R.id.loadingBar);
-
-        getSupportActionBar().setTitle(R.string.loading);
-
         YboTvDatabase database = ((YboTvApplication) getApplication()).getDatabase();
         LastUpdate lastUpdate = database.selectSingle(new LastUpdate());
-        Log.d(YboTvApplication.TAG, "lastUpdate : " + lastUpdate);
+
         if (lastUpdate == null || mustUpdate(lastUpdate)) {
+
+            messageLoading = (TextView) findViewById(R.id.messageLoading);
+            loadingBar = (ProgressBar) findViewById(R.id.loadingBar);
+
+            getSupportActionBar().setTitle(R.string.loading);
             loadDatas();
         } else {
             finish();

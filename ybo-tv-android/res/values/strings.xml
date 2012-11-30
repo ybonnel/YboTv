@@ -16,4 +16,7 @@
     <string name="finSoiree">Fin de soirée</string>
 
     <string name="rate">Note</string>
+
+    <string name="title_changelog">YboTv</string>
+    <string name="changelog_close">Fermer</string>
 </resources>

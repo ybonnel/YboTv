@@ -3,13 +3,18 @@ package fr.ybo.ybotv.android.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.widget.ArrayAdapter;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockListActivity;
 import fr.ybo.ybotv.android.R;
+import fr.ybo.ybotv.android.YboTvApplication;
 import fr.ybo.ybotv.android.util.ArraysUtil;
+import fr.ybo.ybotv.android.util.ChangeLogDialog;
 
 public class MenuManager implements ActionBar.OnNavigationListener {
 
@@ -77,6 +82,17 @@ public class MenuManager implements ActionBar.OnNavigationListener {
         menuManagerInterface.getSupportActionBar().setListNavigationCallbacks(listMenu, this);
         menuManagerInterface.getSupportActionBar().setSelectedNavigationItem(getItemPositionForCurrentClass());
         menuManagerInterface.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //Launch change log dialog
+        ChangeLogDialog changeLogDialog = new ChangeLogDialog(activity);
+        String currentVersion = changeLogDialog.GetAppVersion();
+        YboTvApplication application = (YboTvApplication) activity.getApplication();
+        Log.d(YboTvApplication.TAG, "CurrentVersion : " + currentVersion);
+        Log.d(YboTvApplication.TAG, "getVersionInPref : " + application.getVersionInPref());
+        if (!application.getVersionInPref().equals(currentVersion)) {
+            changeLogDialog.show();
+            application.updateVersionInPref(currentVersion);
+        }
     }
 
     @Override
