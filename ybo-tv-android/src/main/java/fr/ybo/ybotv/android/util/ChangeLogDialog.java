@@ -144,7 +144,6 @@ public class ChangeLogDialog {
 
         //Create webview and load html
         WebView _WebView = new WebView(fActivity);
-        Log.d(YboTvApplication.TAG, Charset.defaultCharset().displayName());
         _WebView.loadData(_HTML, "text/html; charset=UTF-8", null);
         AlertDialog.Builder builder = new AlertDialog.Builder(fActivity)
                 .setTitle(_Title)

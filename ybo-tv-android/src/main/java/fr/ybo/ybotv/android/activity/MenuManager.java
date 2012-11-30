@@ -87,8 +87,6 @@ public class MenuManager implements ActionBar.OnNavigationListener {
         ChangeLogDialog changeLogDialog = new ChangeLogDialog(activity);
         String currentVersion = changeLogDialog.GetAppVersion();
         YboTvApplication application = (YboTvApplication) activity.getApplication();
-        Log.d(YboTvApplication.TAG, "CurrentVersion : " + currentVersion);
-        Log.d(YboTvApplication.TAG, "getVersionInPref : " + application.getVersionInPref());
         if (!application.getVersionInPref().equals(currentVersion)) {
             changeLogDialog.show();
             application.updateVersionInPref(currentVersion);

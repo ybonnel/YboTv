@@ -1,6 +1,8 @@
 package fr.ybo.ybotv.android.util;
 
 import android.content.Context;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,6 +35,7 @@ public class UpdateProgrammes extends TacheAvecGestionErreurReseau {
     @Override
     protected void myDoBackground() throws YboTvErreurReseau {
         // Récupération des chaines
+        Chrono chrono = new Chrono("UpdateProgramme>Reseau").start();
         List<Channel> channels = YboTvService.getInstance().getChannels();
 
         if (handler != null) {
@@ -84,8 +87,14 @@ public class UpdateProgrammes extends TacheAvecGestionErreurReseau {
                 }
             });
         }
+        chrono.stop();
+
+        chrono = new Chrono("Chaines>Suppression").start();
         // Suppression des anciennes chaînes.
         database.deleteAll(Channel.class);
+        chrono.stop();
+
+        chrono = new Chrono("Chaines>insertion").start();
 
         // insertion des nouvelles chaines
         try {
@@ -118,21 +127,60 @@ public class UpdateProgrammes extends TacheAvecGestionErreurReseau {
             });
         }
 
+        chrono.stop();
+
+        chrono = new Chrono("Programme>Suppression").start();
+
         // Suppression de tout les programmes.
         database.deleteAll(Programme.class);
+        chrono.stop();
+
+        chrono = new Chrono("Programme>insertion").start();
+
+
 
         try {
+            SQLiteDatabase db = database.getWritableDatabase();
             database.beginTransaction();
+            DatabaseUtils.InsertHelper ih = new DatabaseUtils.InsertHelper(db, database.getBase().getTable(Programme.class).getName());
+
+            int idCol = ih.getColumnIndex("id");
+            int startCol = ih.getColumnIndex("start");
+            int stopCol = ih.getColumnIndex("stop");
+            int channelCol = ih.getColumnIndex("channel");
+            int iconCol = ih.getColumnIndex("icon");
+            int titleCol = ih.getColumnIndex("title");
+            int descCol = ih.getColumnIndex("desc");
+            int starRatingCol = ih.getColumnIndex("starRating");
+            int csaRatingCol = ih.getColumnIndex("csaRating");
+
             for (Programme programme : programmesToInsert) {
-                database.insert(programme);
+                ih.prepareForInsert();
+
+                // Add the data for each column
+                ih.bind(idCol, programme.getId());
+                ih.bind(startCol, programme.getStart());
+                ih.bind(stopCol, programme.getStop());
+                ih.bind(channelCol, programme.getChannel());
+                ih.bind(iconCol, programme.getIcon());
+                ih.bind(titleCol, programme.getTitle());
+                ih.bind(descCol, programme.getDesc());
+                ih.bind(starRatingCol, programme.getStarRating());
+                ih.bind(csaRatingCol, programme.getCsaRating());
+
+                ih.execute();
             }
         } finally {
             database.endTransaction();
         }
 
+        chrono.stop();
+
+        chrono = new Chrono("LastUpdate>update").start();
         database.deleteAll(LastUpdate.class);
         LastUpdate lastUpdate = new LastUpdate();
         lastUpdate.setLastUpdate(new Date());
         database.insert(lastUpdate);
+        chrono.stop();
     }
 }
