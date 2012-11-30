@@ -1,6 +1,8 @@
 package fr.ybo.ybotv.android.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -16,7 +18,6 @@ import fr.ybo.ybotv.android.modele.Channel;
 import fr.ybo.ybotv.android.modele.LastUpdate;
 import fr.ybo.ybotv.android.modele.Programme;
 import fr.ybo.ybotv.android.service.YboTvService;
-import fr.ybo.ybotv.android.util.ChangeLogDialog;
 import fr.ybo.ybotv.android.util.TacheAvecGestionErreurReseau;
 
 import java.util.*;
@@ -56,6 +57,14 @@ public class LoadingActivity extends SherlockActivity {
 
             messageLoading = (TextView) findViewById(R.id.messageLoading);
             loadingBar = (ProgressBar) findViewById(R.id.loadingBar);
+
+            String currentVersion = "";
+            try {
+                PackageInfo _info = getPackageManager().getPackageInfo(getPackageName(), 0);
+                currentVersion = _info.versionName;
+            } catch (PackageManager.NameNotFoundException ignore) {}
+
+            ((TextView) findViewById(R.id.loading_version)).setText(getString(R.string.version, currentVersion));
 
             getSupportActionBar().setTitle(R.string.loading);
             loadDatas();

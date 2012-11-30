@@ -1,22 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-    <TextView
-            android:id="@+id/messageLoading"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent">
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_margin="20dip"
-            android:layout_gravity="center" />
+            >
 
-    <ProgressBar
-            android:id="@+id/loadingBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dip"
-            android:layout_gravity="center" />
-</LinearLayout>
+        <TextView android:layout_height="wrap_content"
+                  android:layout_width="fill_parent"
+                  android:paddingTop="5dp"
+                  android:textSize="24dp"
+                  android:textStyle="bold"
+                  android:textColor="@android:color/white"
+                  android:gravity="center_horizontal"
+                  android:text="@string/welcome"/>
+
+        <ImageView android:layout_height="wrap_content"
+                   android:layout_width="fill_parent"
+                   android:src="@drawable/icon"
+                   android:paddingTop="10dp"
+                   android:contentDescription="@string/app_name"/>
+
+        <TextView android:id="@+id/loading_version"
+                  android:layout_height="wrap_content"
+                  android:layout_width="fill_parent"
+                  android:gravity="center_horizontal"
+                  android:paddingTop="5dp"
+                  android:textSize="12dp"/>
+
+        <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:paddingTop="5dp"
+                android:textSize="14dp"
+                android:gravity="center_horizontal"
+                android:text="@string/firstLoading"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
+
+        <TextView
+                android:id="@+id/messageLoading"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"/>
+
+        <ProgressBar
+                android:id="@+id/loadingBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_gravity="center"/>
+    </LinearLayout>
+</ScrollView>
