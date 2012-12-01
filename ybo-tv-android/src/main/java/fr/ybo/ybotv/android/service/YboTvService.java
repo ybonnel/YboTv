@@ -26,7 +26,7 @@ public class YboTvService {
 
     private static final YboTvService instance = new YboTvService();
 
-    private static final String SERVEUR = "http://ybo-tv.appspot.com/";
+    private static final String SERVEUR = "http://ybo-tv.ybonnel.fr/";
 
     private static final String CHANNEL_SERVICE_URL = "data/channel/";
 
