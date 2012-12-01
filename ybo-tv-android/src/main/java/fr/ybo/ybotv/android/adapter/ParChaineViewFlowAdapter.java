@@ -3,8 +3,8 @@ package fr.ybo.ybotv.android.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +13,15 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import fr.ybo.ybotv.android.R;
 import fr.ybo.ybotv.android.YboTvApplication;
-import fr.ybo.ybotv.android.activity.ListProgrammeManager;
 import fr.ybo.ybotv.android.activity.ProgrammeActivity;
 import fr.ybo.ybotv.android.modele.Channel;
-import fr.ybo.ybotv.android.modele.ChannelWithProgramme;
 import fr.ybo.ybotv.android.modele.Programme;
 import org.taptwo.android.widget.TitleProvider;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class ParChaineViewFlowAdapter extends BaseAdapter implements TitleProvider {
 
@@ -71,32 +71,54 @@ public class ParChaineViewFlowAdapter extends BaseAdapter implements TitleProvid
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.list, null);
         }
 
-        ListView listView = (ListView) convertView.findViewById(android.R.id.list);
-        List<Programme> programmes = Programme.getProgrammes((YboTvApplication) context.getApplication(), getItem(position));
-        listView.setAdapter(new ProgrammeByChaineAdapter(context, programmes));
-        int currentPosition = 0;
-        String currentDate = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        for (Programme programme : programmes) {
-            if (currentDate.compareTo(programme.getStart()) >= 0
-                    && currentDate.compareTo(programme.getStop()) < 0) {
-                break;
-            }
-            currentPosition++;
-        }
-
-        if (currentPosition < programmes.size()) {
-            listView.setSelection(currentPosition);
-        }
-
+        final ListView listView = (ListView) convertView.findViewById(android.R.id.list);
         listView.setTextFilterEnabled(true);
+
+        final List<Programme> programmes = new ArrayList<Programme>();
+        final Channel channel = getItem(position);
         listView.setOnItemClickListener(new ProgrammeOnItemClickListener(programmes, context));
+        final ProgrammeByChaineAdapter adapter = new ProgrammeByChaineAdapter(context, programmes);
+        listView.setAdapter(adapter);
         context.registerForContextMenu(listView);
+
+        new AsyncTask<Void, Void, Integer>() {
+
+            @Override
+            protected Integer doInBackground(Void... params) {
+                List<Programme> programmesTmp = Programme.getProgrammes((YboTvApplication) context.getApplication(), channel);
+
+                int currentPosition = 0;
+                String currentDate = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+                for (Programme programme : programmesTmp) {
+                    if (currentDate.compareTo(programme.getStart()) >= 0
+                            && currentDate.compareTo(programme.getStop()) < 0) {
+                        break;
+                    }
+                    currentPosition++;
+                }
+
+                programmes.clear();
+                programmes.addAll(programmesTmp);
+
+                return currentPosition;
+            }
+
+            @Override
+            protected void onPostExecute(Integer currentPosition) {
+                adapter.notifyDataSetChanged();
+                if (currentPosition < programmes.size()) {
+                    listView.setSelection(currentPosition);
+                }
+
+            }
+        }.execute();
 
         return convertView;
     }
