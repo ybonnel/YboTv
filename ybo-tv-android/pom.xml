@@ -14,6 +14,11 @@
             <artifactId>android</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.google.android.analytics</groupId>
+            <artifactId>analytics</artifactId>
+            <version>2.0.3</version>
+        </dependency>
+        <dependency>
             <groupId>com.actionbarsherlock</groupId>
             <artifactId>actionbarsherlock</artifactId>
             <version>4.2.0</version>

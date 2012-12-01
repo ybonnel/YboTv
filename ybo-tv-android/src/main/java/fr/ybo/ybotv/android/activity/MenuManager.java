@@ -14,6 +14,7 @@ import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.analytics.tracking.android.EasyTracker;
 import fr.ybo.ybotv.android.R;
 import fr.ybo.ybotv.android.YboTvApplication;
 import fr.ybo.ybotv.android.util.ArraysUtil;
@@ -57,6 +58,18 @@ public class MenuManager implements ActionBar.OnNavigationListener {
             }
             return super.onOptionsItemSelected(item);
         }
+
+        @Override
+        public void onStart() {
+            super.onStart();
+            EasyTracker.getInstance().activityStart(this);
+        }
+
+        @Override
+        public void onStop() {
+            super.onStop();
+            EasyTracker.getInstance().activityStop(this);
+        }
     }
 
     public static abstract class AbstractListActivity extends SherlockListActivity implements MenuManagerInterface {
@@ -87,6 +100,18 @@ public class MenuManager implements ActionBar.OnNavigationListener {
                 return true;
             }
             return super.onOptionsItemSelected(item);
+        }
+
+        @Override
+        public void onStart() {
+            super.onStart();
+            EasyTracker.getInstance().activityStart(this);
+        }
+
+        @Override
+        public void onStop() {
+            super.onStop();
+            EasyTracker.getInstance().activityStop(this);
         }
     }
 
