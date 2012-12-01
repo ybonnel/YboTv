@@ -22,6 +22,9 @@
         <activity android:name=".activity.ProgrammeActivity"/>
         <activity android:name=".activity.PreferenceActivity"/>
 
+        <activity android:name="com.google.ads.AdActivity"
+                  android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+
         <receiver android:name=".receiver.AlarmReceiver"/>
 
         <service android:name=".service.UpdateService" android:exported="false">

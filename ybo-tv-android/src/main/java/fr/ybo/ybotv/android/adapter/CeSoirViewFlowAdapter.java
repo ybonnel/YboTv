@@ -92,7 +92,7 @@ public class CeSoirViewFlowAdapter extends BaseAdapter implements TitleProvider 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.list, null);
+            convertView = inflater.inflate(R.layout.list_ss_pub, null);
         }
 
         ListView listView = (ListView) convertView.findViewById(android.R.id.list);

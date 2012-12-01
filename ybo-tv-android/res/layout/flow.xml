@@ -1,22 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res/fr.ybo.ybotv.android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
 
-    <LinearLayout android:layout_width="fill_parent"
-                  android:gravity="center_horizontal" android:id="@+id/header_layout"
-                  android:orientation="vertical" android:layout_height="wrap_content">
-        <org.taptwo.android.widget.TitleFlowIndicator
-                android:id="@+id/viewflowindic" android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                app:footerLineHeight="2dp"
-                app:footerTriangleHeight="10dp" app:textColor="#FFFFFFFF" app:selectedColor="@color/abs__holo_blue_light" app:footerColor="@color/abs__holo_blue_light" app:titlePadding="5dp" app:textSize="11dp" app:selectedSize="12dp" android:layout_marginTop="6dip" app:clipPadding="0dp"/>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res/fr.ybo.ybotv.android"
+             xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:orientation="vertical">
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="50dip"
+            >
 
+        <LinearLayout android:layout_width="fill_parent"
+                      android:gravity="center_horizontal" android:id="@+id/header_layout"
+                      android:orientation="vertical" android:layout_height="wrap_content">
+            <org.taptwo.android.widget.TitleFlowIndicator
+                    android:id="@+id/viewflowindic" android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    app:footerLineHeight="2dp"
+                    app:footerTriangleHeight="10dp" app:textColor="#FFFFFFFF"
+                    app:selectedColor="@color/abs__holo_blue_light" app:footerColor="@color/abs__holo_blue_light"
+                    app:titlePadding="5dp" app:textSize="11dp" app:selectedSize="12dp" android:layout_marginTop="6dip"
+                    app:clipPadding="0dp"/>
+
+        </LinearLayout>
+        <org.taptwo.android.widget.ViewFlow
+                android:duplicateParentState="true" android:id="@+id/viewflow"
+                android:layout_width="fill_parent" android:layout_height="fill_parent"/>
     </LinearLayout>
-    <org.taptwo.android.widget.ViewFlow
-            android:duplicateParentState="true" android:id="@+id/viewflow"
-            android:layout_width="fill_parent" android:layout_height="fill_parent"/>
-</LinearLayout>
+
+    <com.google.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            ads:adSize="BANNER"
+            ads:testDevices="TEST_EMULATOR"
+            ads:adUnitId="a150ba4f2ebca17"/>
+
+</FrameLayout>

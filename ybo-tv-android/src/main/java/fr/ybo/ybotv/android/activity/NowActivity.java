@@ -1,18 +1,12 @@
 package fr.ybo.ybotv.android.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.ListView;
 import fr.ybo.ybotv.android.R;
 import fr.ybo.ybotv.android.YboTvApplication;
-import fr.ybo.ybotv.android.adapter.ProgrammeAdapter;
-import fr.ybo.ybotv.android.database.YboTvDatabase;
 import fr.ybo.ybotv.android.modele.ChannelWithProgramme;
-import fr.ybo.ybotv.android.modele.LastUpdate;
+import fr.ybo.ybotv.android.util.AdMobUtil;
 
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 public class NowActivity extends MenuManager.AbstractListActivity implements ListProgrammeManager.GetProgramme {
 
@@ -25,6 +19,8 @@ public class NowActivity extends MenuManager.AbstractListActivity implements Lis
 
         ListProgrammeManager listProgrammeManager = new ListProgrammeManager(getListView(), this, this);
         listProgrammeManager.constructAdapter();
+
+        AdMobUtil.manageAds(this);
     }
 
 

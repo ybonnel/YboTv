@@ -13,6 +13,7 @@ import fr.ybo.ybotv.android.R;
 import fr.ybo.ybotv.android.YboTvApplication;
 import fr.ybo.ybotv.android.lasylist.ImageLoader;
 import fr.ybo.ybotv.android.modele.Programme;
+import fr.ybo.ybotv.android.util.AdMobUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -78,6 +79,7 @@ public class ProgrammeActivity extends SherlockActivity {
 
         description.setMovementMethod(new ScrollingMovementMethod());
 
+        AdMobUtil.manageAds(this);
     }
 
     @Override

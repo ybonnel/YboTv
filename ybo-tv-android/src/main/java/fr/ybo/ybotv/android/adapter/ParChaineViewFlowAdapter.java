@@ -75,7 +75,7 @@ public class ParChaineViewFlowAdapter extends BaseAdapter implements TitleProvid
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.list, null);
+            convertView = inflater.inflate(R.layout.list_ss_pub, null);
         }
 
         final ListView listView = (ListView) convertView.findViewById(android.R.id.list);
