@@ -1,21 +1,24 @@
 package fr.ybo.ybotv.android;
 
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.StrictMode;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import fr.ybo.ybotv.android.activity.CeSoirActivity;
+import fr.ybo.ybotv.android.activity.NowActivity;
+import fr.ybo.ybotv.android.activity.ParChaineActivity;
 import fr.ybo.ybotv.android.database.YboTvDatabase;
 import fr.ybo.ybotv.android.receiver.AlarmReceiver;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 
 import java.util.Calendar;
-import java.util.Random;
-import java.util.TimeZone;
 
 @ReportsCrashes(formKey = "dDBLNm5ZR2dLWFhyQTV0dDMtTDdFZVE6MQ")
 public class YboTvApplication extends Application {
@@ -47,18 +50,40 @@ public class YboTvApplication extends Application {
         return database;
     }
 
+    private static enum SCREEN {
+        NOW(NowActivity.class),
+        CE_SOIR(CeSoirActivity.class),
+        PAR_CHAINE(ParChaineActivity.class);
+
+        private Class<? extends Activity> activity;
+
+        private SCREEN(Class<? extends Activity> activity) {
+            this.activity = activity;
+        }
+
+        public Class<? extends Activity> getActivity() {
+            return activity;
+        }
+    }
+
+    public Class<? extends Activity> getDefaultActivity() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String defaultScreen = prefs.getString("YboTv_defaultScreen", SCREEN.NOW.name());
+        return SCREEN.valueOf(defaultScreen).getActivity();
+    }
+
     private String versionInPref = null;
 
     public String getVersionInPref() {
         if (versionInPref == null) {
-            SharedPreferences prefs = getSharedPreferences(TAG, 0);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             versionInPref = prefs.getString("ybo-tv.version", "0");
         }
         return versionInPref;
     }
 
     public void updateVersionInPref(String currentVersion) {
-        SharedPreferences prefs = getSharedPreferences(TAG, 0);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("ybo-tv.version", currentVersion);
         editor.commit();

@@ -23,4 +23,9 @@
     <string name="firstLoading">Il s\'agit du premier lancement de l\'application, nous sommes donc obligés de récupérer les programmes. Après ce premier lancement, cette opération se fera de manière silencieuse afin que vous ayez toujours les derniers programmes à disposition.</string>
     <string name="version">Version %1$s.</string>
     <string name="welcome">Bienvenu sur YboTv!</string>
+    <string name="preference">Préférences</string>
+
+    <string name="defaultScreen">Affichage par défaut</string>
+    <string name="chooseDefaultScreen">Choisissez l\'affichage par défaut</string>
+
 </resources>

@@ -19,6 +19,7 @@
         <activity android:name=".activity.ParChaineActivity"/>
         <activity android:name=".activity.NowActivity"/>
         <activity android:name=".activity.ProgrammeActivity"/>
+        <activity android:name=".activity.PreferenceActivity"/>
 
         <receiver android:name=".receiver.AlarmReceiver"/>
 

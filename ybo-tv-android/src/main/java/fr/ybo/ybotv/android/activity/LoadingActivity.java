@@ -63,7 +63,7 @@ public class LoadingActivity extends SherlockActivity {
             loadDatas();
         } else {
             finish();
-            startActivity(new Intent(this, NowActivity.class));
+            startActivity(new Intent(this, ((YboTvApplication) getApplication()).getDefaultActivity()));
             ((YboTvApplication) getApplication()).setRecurringAlarm();
         }
 
@@ -79,7 +79,7 @@ public class LoadingActivity extends SherlockActivity {
                 super.onPostExecute(aVoid);
                 ((YboTvApplication) getApplication()).setRecurringAlarm();
                 finish();
-                startActivity(new Intent(LoadingActivity.this, NowActivity.class));
+                startActivity(new Intent(LoadingActivity.this, ((YboTvApplication) getApplication()).getDefaultActivity()));
             }
         }.execute();
     }

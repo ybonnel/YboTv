@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/defaultScreen" >
+        <ListPreference
+                android:dialogTitle="@string/chooseDefaultScreen"
+                android:entries="@array/menu_principal_chaines"
+                android:entryValues="@array/screens"
+                android:key="YboTv_defaultScreen"
+                android:title="@string/chooseDefaultScreen"
+                android:defaultValue="@id/menu_now"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -11,6 +11,9 @@ import android.widget.ArrayAdapter;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import fr.ybo.ybotv.android.R;
 import fr.ybo.ybotv.android.YboTvApplication;
 import fr.ybo.ybotv.android.util.ArraysUtil;
@@ -38,6 +41,22 @@ public class MenuManager implements ActionBar.OnNavigationListener {
             super.onResume();
             getSupportActionBar().setSelectedNavigationItem(actionBarManager.getItemPositionForCurrentClass());
         }
+
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            MenuInflater inflater = getSupportMenuInflater();
+            inflater.inflate(R.menu.mainmenu, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            if (item.getItemId() == R.id.menu_preferences) {
+                startActivity(new Intent(this, PreferenceActivity.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     public static abstract class AbstractListActivity extends SherlockListActivity implements MenuManagerInterface {
@@ -52,6 +71,22 @@ public class MenuManager implements ActionBar.OnNavigationListener {
         protected void onResume() {
             super.onResume();
             getSupportActionBar().setSelectedNavigationItem(actionBarManager.getItemPositionForCurrentClass());
+        }
+
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            MenuInflater inflater = getSupportMenuInflater();
+            inflater.inflate(R.menu.mainmenu, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            if (item.getItemId() == R.id.menu_preferences) {
+                startActivity(new Intent(this, PreferenceActivity.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
         }
     }
 

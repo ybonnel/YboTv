@@ -10,4 +10,10 @@
         <item>@id/menu_cesoir</item>
         <item>@id/menu_parchaine</item>
     </array>
+
+    <string-array name="screens">
+        <item>NOW</item>
+        <item>CE_SOIR</item>
+        <item>PAR_CHAINE</item>
+    </string-array>
 </resources>
