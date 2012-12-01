@@ -15,6 +15,10 @@ public abstract class TacheAvecGestionErreurReseau extends AsyncTask<Void, Void,
 
     private boolean erreurReseau = false;
 
+    public boolean hasErreurReseau() {
+        return erreurReseau;
+    }
+
     public TacheAvecGestionErreurReseau(Context context) {
         this.context = context;
     }

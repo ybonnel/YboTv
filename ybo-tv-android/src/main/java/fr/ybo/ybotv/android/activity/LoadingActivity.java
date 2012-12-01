@@ -77,9 +77,11 @@ public class LoadingActivity extends SherlockActivity {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                ((YboTvApplication) getApplication()).setRecurringAlarm();
                 finish();
-                startActivity(new Intent(LoadingActivity.this, ((YboTvApplication) getApplication()).getDefaultActivity()));
+                if (!hasErreurReseau()) {
+                    ((YboTvApplication) getApplication()).setRecurringAlarm();
+                    startActivity(new Intent(LoadingActivity.this, ((YboTvApplication) getApplication()).getDefaultActivity()));
+                }
             }
         }.execute();
     }
