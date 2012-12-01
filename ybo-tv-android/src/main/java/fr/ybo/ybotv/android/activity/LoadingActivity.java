@@ -1,5 +1,8 @@
 package fr.ybo.ybotv.android.activity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -60,7 +63,7 @@ public class LoadingActivity extends SherlockActivity {
             ((TextView) findViewById(R.id.loading_version)).setText(getString(R.string.version, currentVersion));
 
             getSupportActionBar().setTitle(R.string.loading);
-            loadDatas();
+            showDialog(R.id.dialog_loading);
         } else {
             finish();
             startActivity(new Intent(this, ((YboTvApplication) getApplication()).getDefaultActivity()));
@@ -101,6 +104,29 @@ public class LoadingActivity extends SherlockActivity {
     @Override
     public void onBackPressed() {
         // On ne fait rien.
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        if (id == R.id.dialog_loading) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(getString(R.string.firstLoadingMessage));
+            builder.setCancelable(false);
+            builder.setPositiveButton(getString(R.string.oui), new Dialog.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                    loadDatas();
+                }
+            });
+            builder.setNegativeButton(getString(R.string.non), new Dialog.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                    LoadingActivity.this.finish();
+                }
+            });
+            return builder.create();
+        }
+        return super.onCreateDialog(id);
     }
 
 }

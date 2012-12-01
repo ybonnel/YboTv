@@ -16,4 +16,6 @@
     <item type="id" name="menu_now"/>
     <item type="id" name="menu_cesoir"/>
     <item type="id" name="menu_parchaine"/>
+
+    <item type="id" name="dialog_loading"/>
 </resources>
