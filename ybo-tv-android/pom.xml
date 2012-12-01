@@ -82,6 +82,7 @@
                     <version>2.1</version>
                     <configuration>
                         <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <goals>deploy -f ybo-tv-android/pom.xml</goals>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -280,4 +281,19 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <developers>
+        <developer>
+            <id>ybonnel</id>
+            <name>Yan Bonnel</name>
+            <email>ybonnel@gmail.com</email>
+            <url>https://github.com/ybonnel</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git://github.com/ybonnel/YboTv.git</connection>
+        <developerConnection>scm:git:git@github.com:ybonnel/YboTv.git</developerConnection>
+        <url>https://github.com/ybonnel/YboTv</url>
+    </scm>
 </project>
