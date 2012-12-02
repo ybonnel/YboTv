@@ -8,7 +8,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -17,10 +16,10 @@ import fr.ybo.ybotv.android.R;
 import fr.ybo.ybotv.android.YboTvApplication;
 import fr.ybo.ybotv.android.database.YboTvDatabase;
 import fr.ybo.ybotv.android.modele.LastUpdate;
+import fr.ybo.ybotv.android.util.TimeUnit;
 import fr.ybo.ybotv.android.util.UpdateProgrammes;
 
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.Date;
 
 public class LoadingActivity extends SherlockActivity {
 

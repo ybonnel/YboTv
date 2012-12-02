@@ -7,10 +7,10 @@ import android.os.IBinder;
 import fr.ybo.ybotv.android.YboTvApplication;
 import fr.ybo.ybotv.android.database.YboTvDatabase;
 import fr.ybo.ybotv.android.modele.LastUpdate;
+import fr.ybo.ybotv.android.util.TimeUnit;
 import fr.ybo.ybotv.android.util.UpdateProgrammes;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class UpdateService extends Service  {
 
