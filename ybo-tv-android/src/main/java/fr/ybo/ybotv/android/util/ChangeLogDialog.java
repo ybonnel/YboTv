@@ -130,7 +130,8 @@ public class ChangeLogDialog {
         //Get Changelog xml resource id
         _resID = _Resource.getIdentifier(CHANGELOG_XML, "xml", _PackageName);
         //Create html change log
-        String _HTML = GetHTMLChangelog(_resID, _Resource);
+        String _HTML = replaceHtmlAccents(GetHTMLChangelog(_resID, _Resource));
+        Log.d(YboTvApplication.TAG, _HTML);
 
         //Get button strings
         String _Close = _Resource.getString(R.string.changelog_close);
@@ -144,7 +145,7 @@ public class ChangeLogDialog {
 
         //Create webview and load html
         WebView _WebView = new WebView(fActivity);
-        _WebView.loadData(_HTML, "text/html; charset=UTF-8", null);
+        _WebView.loadData(_HTML, "text/html", null);
         AlertDialog.Builder builder = new AlertDialog.Builder(fActivity)
                 .setTitle(_Title)
                 .setView(_WebView)
@@ -154,6 +155,10 @@ public class ChangeLogDialog {
                     }
                 });
         builder.create().show();
+    }
+
+    private static String replaceHtmlAccents(String html) {
+        return html.replaceAll("@", "&");
     }
 
 }
