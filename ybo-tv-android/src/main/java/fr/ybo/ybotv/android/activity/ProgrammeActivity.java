@@ -40,12 +40,12 @@ public class ProgrammeActivity extends SherlockActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.programme_activity);
         Programme programme = getIntent().getParcelableExtra("programme");
+        getSupportActionBar().setTitle(programme.getTitle());
         ImageLoader imageLoader=new ImageLoader(getApplicationContext());
 
         ImageView icon = (ImageView) findViewById(R.id.programme_activity_icon);
         ImageView rating = (ImageView) findViewById(R.id.programme_activity_rating);
         ImageView csaRating = (ImageView) findViewById(R.id.programme_activity_csa_rating);
-        TextView title = (TextView) findViewById(R.id.programme_activity_title);
         TextView description = (TextView) findViewById(R.id.programme_activity_description);
 
         if (programme.getIcon() != null && programme.getIcon().length() > 0) {
@@ -69,7 +69,6 @@ public class ProgrammeActivity extends SherlockActivity {
         } else {
             csaRating.setVisibility(View.GONE);
         }
-        title.setText(programme.getTitle());
         if (programme.getDesc() != null) {
             description.setText(programme.getDesc());
             description.setVisibility(View.VISIBLE);
