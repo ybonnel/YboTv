@@ -32,4 +32,6 @@
     <string name="oui">oui</string>
     <string name="non">non</string>
 
+    <string name="choixChaine">Choix chaîne</string>
+
 </resources>

@@ -31,10 +31,10 @@ public class ParChaineViewFlowAdapter extends BaseAdapter implements TitleProvid
 
     private List<Channel> channels;
 
-    public ParChaineViewFlowAdapter(Activity context) {
+    public ParChaineViewFlowAdapter(Activity context, List<Channel> channels) {
         this.inflater = LayoutInflater.from(context);
         this.context = context;
-        this.channels = ((YboTvApplication) context.getApplication()).getDatabase().selectAll(Channel.class);
+        this.channels = channels;
     }
 
     @Override

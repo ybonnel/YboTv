@@ -7,4 +7,9 @@
           android:showAsAction="never"
           android:icon="@android:drawable/ic_menu_manage"/>
 
+    <item android:id="@+id/menu_choixChaine"
+          android:title="@string/choixChaine"
+          android:icon="@android:drawable/ic_menu_more"
+          android:showAsAction="ifRoom"/>
+
 </menu>
