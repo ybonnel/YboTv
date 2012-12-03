@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--suppress AndroidLintUseCompoundDrawables -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <ImageView android:id="@+id/programme_activity_icon"
+                   android:layout_height="100dp"
+                   android:layout_width="132dp"
+                   android:layout_alignParentLeft="true"
+                   android:layout_alignParentTop="true"
+                   android:gravity="center"
+                   android:src="@drawable/loading"
+                   android:contentDescription="@string/loading"
+                   android:paddingTop="5dp"
+                   android:paddingLeft="5dp"/>
+
+        <ImageView android:id="@+id/programme_activity_rating"
+                   android:layout_height="wrap_content"
+                   android:layout_width="wrap_content"
+                   android:layout_alignParentTop="true"
+                   android:layout_alignParentRight="true"
+                   android:paddingLeft="5dp"
+                   android:paddingTop="5dp"
+                   android:paddingRight="5dp"
+                   android:contentDescription="@string/rate"/>
+
+        <ImageView android:id="@+id/programme_activity_csa_rating"
+                   android:layout_height="wrap_content"
+                   android:layout_width="wrap_content"
+                   android:layout_below="@id/programme_activity_rating"
+                   android:layout_alignParentRight="true"
+                   android:paddingLeft="5dp"
+                   android:paddingTop="10dp"
+                   android:paddingRight="5dp"
+                   android:contentDescription="@string/rate"/>
+    </RelativeLayout>
+
+    <TextView android:id="@+id/programme_activity_description"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:padding="5dp"
+              android:textSize="16dp"/>
+
+
+</LinearLayout>

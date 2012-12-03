@@ -60,7 +60,7 @@ public class UpdateProgrammes extends TacheAvecGestionErreurReseau {
             for (Programme programme : YboTvService.getInstance().getProgrammes(channel)) {
 
                 if (!programeIds.contains(programme.getId())) {
-                    programme.fillCsaRating();
+                    programme.fillFields();
                     programmesToInsert.add(programme);
                     programeIds.add(programme.getId());
                 }
@@ -153,6 +153,12 @@ public class UpdateProgrammes extends TacheAvecGestionErreurReseau {
             int descCol = ih.getColumnIndex("desc");
             int starRatingCol = ih.getColumnIndex("starRating");
             int csaRatingCol = ih.getColumnIndex("csaRating");
+            int directorsCol = ih.getColumnIndex("directors");
+            int actorsCol = ih.getColumnIndex("actors");
+            int writersCol = ih.getColumnIndex("writers");
+            int presentersCol = ih.getColumnIndex("presenters");
+            int dateCol = ih.getColumnIndex("date");
+            int categoriesCol = ih.getColumnIndex("categories");
 
             for (Programme programme : programmesToInsert) {
                 ih.prepareForInsert();
@@ -167,6 +173,12 @@ public class UpdateProgrammes extends TacheAvecGestionErreurReseau {
                 ih.bind(descCol, programme.getDesc());
                 ih.bind(starRatingCol, programme.getStarRating());
                 ih.bind(csaRatingCol, programme.getCsaRating());
+                ih.bind(directorsCol, programme.getDirectorsInCsv());
+                ih.bind(actorsCol, programme.getActorsInCsv());
+                ih.bind(writersCol, programme.getWritersInCsv());
+                ih.bind(presentersCol, programme.getPresentersInCsv());
+                ih.bind(dateCol, programme.getDate());
+                ih.bind(categoriesCol, programme.getCategoriesInCsv());
 
                 ih.execute();
             }

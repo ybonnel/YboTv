@@ -3,6 +3,7 @@ package fr.ybo.ybotv.android.modele;
 import fr.ybo.database.annotation.Column;
 import fr.ybo.database.annotation.Entity;
 import fr.ybo.database.annotation.PrimaryKey;
+import fr.ybo.ybotv.android.service.YboTvService;
 
 import java.io.Serializable;
 
@@ -17,7 +18,7 @@ public class Channel implements Serializable {
     @Column
     private String icon;
 
-    private final static String BASE_URL = "http://ybo-tv.appspot.com/logos/";
+    private final static String BASE_URL = YboTvService.SERVEUR + "logos/";
 
     public String getIconUrl() {
         return BASE_URL + icon;

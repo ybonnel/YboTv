@@ -49,7 +49,13 @@ public class ChannelWithProgramme {
         sqlQuery.append("Programme.title as programmeTitle, ");
         sqlQuery.append("Programme.desc as programmeDesc, ");
         sqlQuery.append("Programme.starRating as programmeStarRating, ");
-        sqlQuery.append("Programme.csaRating as programmeCsaRating ");
+        sqlQuery.append("Programme.csaRating as programmeCsaRating, ");
+        sqlQuery.append("Programme.directors as programmeDirectors, ");
+        sqlQuery.append("Programme.actors as programmeActors, ");
+        sqlQuery.append("Programme.writers as programmeWriters, ");
+        sqlQuery.append("Programme.presenters as programmePresenters, ");
+        sqlQuery.append("Programme.date as programmeDate, ");
+        sqlQuery.append("Programme.categories as programmeCategories ");
 
         sqlQuery.append("FROM Channel, Programme ");
         sqlQuery.append("WHERE ");
@@ -82,6 +88,12 @@ public class ChannelWithProgramme {
         int programmeDescCol = cursor.getColumnIndex("programmeDesc");
         int programmeStarRatingCol = cursor.getColumnIndex("programmeStarRating");
         int programmeCsaRatingCol = cursor.getColumnIndex("programmeCsaRating");
+        int programmeDirectorsCol = cursor.getColumnIndex("programmeDirectors");
+        int programmeActorsCol = cursor.getColumnIndex("programmeActors");
+        int programmeWritersCol = cursor.getColumnIndex("programmeWriters");
+        int programmePresentersCol = cursor.getColumnIndex("programmePresenters");
+        int programmeDateCol = cursor.getColumnIndex("programmeDate");
+        int programmeCategoriesCol = cursor.getColumnIndex("programmeCategories");
 
         while (cursor.moveToNext()) {
             ChannelWithProgramme oneChannelWithProgramme = new ChannelWithProgramme();
@@ -102,6 +114,12 @@ public class ChannelWithProgramme {
             oneProgramme.setStarRating(cursor.getString(programmeStarRatingCol));
             oneProgramme.setCsaRating(cursor.getString(programmeCsaRatingCol));
             oneProgramme.setChannel(oneChannel.getId());
+            oneProgramme.fillDirectorsWithDb(cursor.getString(programmeDirectorsCol));
+            oneProgramme.fillActorsWithDb(cursor.getString(programmeActorsCol));
+            oneProgramme.fillWritersWithDb(cursor.getString(programmeWritersCol));
+            oneProgramme.fillPresentersWithDb(cursor.getString(programmePresentersCol));
+            oneProgramme.setDate(cursor.getString(programmeDateCol));
+            oneProgramme.fillCategoriesWithDb(cursor.getString(programmeCategoriesCol));
 
             oneChannelWithProgramme.setProgramme(oneProgramme);
 

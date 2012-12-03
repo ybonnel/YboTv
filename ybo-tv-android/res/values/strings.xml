@@ -34,4 +34,14 @@
 
     <string name="choixChaine">Choix chaîne</string>
 
+    <string name="resume">Résumé</string>
+    <string name="detail">Détail</string>
+
+    <string name="date">Date : %1$s</string>
+
+    <string name="director">Réalisateur : %1$s</string>
+    <string name="actor">Acteur : %1$s</string>
+    <string name="writer">Auteur : %1$s</string>
+    <string name="presenter">Présentateur : %1$s</string>
+
 </resources>

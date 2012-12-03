@@ -1,6 +1,7 @@
 package fr.ybo.ybotv.android.database;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import fr.ybo.database.DataBaseException;
 import fr.ybo.database.DataBaseHelper;
 import fr.ybo.ybotv.android.modele.Channel;
@@ -21,14 +22,21 @@ public class YboTvDatabase extends DataBaseHelper {
     }};
 
     private static final String DB_NAME = "YBO_TV";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
 
     public YboTvDatabase(Context context) throws DataBaseException {
         super(context, databaseClasses, DB_NAME, DB_VERSION);
     }
 
-    private static final Map<Integer, UpgradeDatabase> mapUpgrades = new HashMap<Integer, UpgradeDatabase>(){{
+    private final Map<Integer, UpgradeDatabase> mapUpgrades = new HashMap<Integer, UpgradeDatabase>(){{
+        put(2, new UpgradeDatabase() {
+            @Override
+            public void upgrade(SQLiteDatabase sqLiteDatabase) {
+                getBase().dropDataBase(sqLiteDatabase);
+                getBase().createDataBase(sqLiteDatabase);
+            }
+        });
 
     }};
 

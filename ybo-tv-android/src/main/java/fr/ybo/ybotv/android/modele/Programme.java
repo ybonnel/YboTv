@@ -40,11 +40,25 @@ public class Programme implements Serializable, Parcelable {
     private String starRating;
     @Column
     private String csaRating;
+    @Column( type = Column.TypeColumn.LIST_TEXT)
+    private List<String> directors;
+    @Column( type = Column.TypeColumn.LIST_TEXT)
+    private List<String> actors;
+    @Column( type = Column.TypeColumn.LIST_TEXT)
+    private List<String> writers;
+    @Column( type = Column.TypeColumn.LIST_TEXT)
+    private List<String> presenters;
+    @Column( type = Column.TypeColumn.LIST_TEXT)
+    private List<String> categories;
+    @Column
+    private String date;
 
 
     private Map<String, String> ratings;
 
-    public void fillCsaRating() {
+
+
+    public void fillFields() {
         if (ratings != null && ratings.containsKey("CSA")) {
             csaRating = ratings.get("CSA");
         }
@@ -137,6 +151,114 @@ public class Programme implements Serializable, Parcelable {
         this.csaRating = csaRating;
     }
 
+    public List<String> getDirectors() {
+        if (directors == null) {
+            directors = new ArrayList<String>();
+        }
+        return directors;
+    }
+
+    public void fillDirectorsWithDb(String dbDirectors) {
+        fillListWithCsv(dbDirectors, getDirectors());
+    }
+
+    private String getListInCsv(List<String> listString) {
+        StringBuilder builder = new StringBuilder();
+        boolean first = true;
+        for (String uneValeur : listString) {
+            if (!first) {
+                builder.append(';');
+            }
+            builder.append(uneValeur);
+            first = false;
+        }
+        return builder.toString();
+
+    }
+
+    public String getDirectorsInCsv() {
+        return getListInCsv(getDirectors());
+    }
+
+    public List<String> getActors() {
+        if (actors == null) {
+            actors = new ArrayList<String>();
+        }
+        return actors;
+    }
+
+    public void fillListWithCsv(String csv, List<String> list) {
+        if (csv != null) {
+            for (String oneValue : csv.split(";")) {
+                if (oneValue != null && oneValue.length() > 0) {
+                    list.add(oneValue);
+                }
+            }
+        }
+
+    }
+
+    public void fillActorsWithDb(String dbActors) {
+        fillListWithCsv(dbActors, getActors());
+    }
+
+    public String getActorsInCsv() {
+        return getListInCsv(getActors());
+    }
+
+    public List<String> getWriters() {
+        if (writers == null) {
+            writers = new ArrayList<String>();
+        }
+        return writers;
+    }
+
+    public void fillWritersWithDb(String dbWriters) {
+        fillListWithCsv(dbWriters, getWriters());
+    }
+
+    public String getWritersInCsv() {
+        return getListInCsv(getWriters());
+    }
+
+    public List<String> getPresenters() {
+        if (presenters == null) {
+            presenters = new ArrayList<String>();
+        }
+        return presenters;
+    }
+
+    public void fillPresentersWithDb(String dbPresenters) {
+        fillListWithCsv(dbPresenters, getPresenters());
+    }
+
+    public String getPresentersInCsv() {
+        return getListInCsv(getPresenters());
+    }
+
+    public List<String> getCategories() {
+        if (categories == null) {
+            categories = new ArrayList<String>();
+        }
+        return categories;
+    }
+
+    public void fillCategoriesWithDb(String dbCategories) {
+        fillListWithCsv(dbCategories, getCategories());
+    }
+
+    public String getCategoriesInCsv() {
+        return getListInCsv(getCategories());
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
         return "Programme{" +
@@ -185,7 +307,13 @@ public class Programme implements Serializable, Parcelable {
         sqlQuery.append("Programme.title as programmeTitle, ");
         sqlQuery.append("Programme.desc as programmeDesc, ");
         sqlQuery.append("Programme.starRating as programmeStarRating, ");
-        sqlQuery.append("Programme.csaRating as programmeCsaRating ");
+        sqlQuery.append("Programme.csaRating as programmeCsaRating, ");
+        sqlQuery.append("Programme.directors as programmeDirectors, ");
+        sqlQuery.append("Programme.actors as programmeActors, ");
+        sqlQuery.append("Programme.writers as programmeWriters, ");
+        sqlQuery.append("Programme.presenters as programmePresenters, ");
+        sqlQuery.append("Programme.date as programmeDate, ");
+        sqlQuery.append("Programme.categories as programmeCategories ");
 
         sqlQuery.append("FROM Programme ");
         sqlQuery.append("WHERE ");
@@ -218,6 +346,12 @@ public class Programme implements Serializable, Parcelable {
         int programmeDescCol = cursor.getColumnIndex("programmeDesc");
         int programmeStarRatingCol = cursor.getColumnIndex("programmeStarRating");
         int programmeCsaRatingCol = cursor.getColumnIndex("programmeCsaRating");
+        int programmeDirectorsCol = cursor.getColumnIndex("programmeDirectors");
+        int programmeActorsCol = cursor.getColumnIndex("programmeActors");
+        int programmeWritersCol = cursor.getColumnIndex("programmeWriters");
+        int programmePresentersCol = cursor.getColumnIndex("programmePresenters");
+        int programmeDateCol = cursor.getColumnIndex("programmeDate");
+        int programmeCategoriesCol = cursor.getColumnIndex("programmeCategories");
 
         while (cursor.moveToNext()) {
 
@@ -231,6 +365,12 @@ public class Programme implements Serializable, Parcelable {
             oneProgramme.setStarRating(cursor.getString(programmeStarRatingCol));
             oneProgramme.setCsaRating(cursor.getString(programmeCsaRatingCol));
             oneProgramme.setChannel(channel.getId());
+            oneProgramme.fillDirectorsWithDb(cursor.getString(programmeDirectorsCol));
+            oneProgramme.fillActorsWithDb(cursor.getString(programmeActorsCol));
+            oneProgramme.fillWritersWithDb(cursor.getString(programmeWritersCol));
+            oneProgramme.fillPresentersWithDb(cursor.getString(programmePresentersCol));
+            oneProgramme.setDate(cursor.getString(programmeDateCol));
+            oneProgramme.fillCategoriesWithDb(cursor.getString(programmeCategoriesCol));
 
             programmes.add(oneProgramme);
         }
@@ -256,6 +396,12 @@ public class Programme implements Serializable, Parcelable {
         parcel.writeString(desc);
         parcel.writeString(starRating);
         parcel.writeString(csaRating);
+        parcel.writeStringList(getDirectors());
+        parcel.writeStringList(getActors());
+        parcel.writeStringList(getWriters());
+        parcel.writeStringList(getPresenters());
+        parcel.writeString(date);
+        parcel.writeStringList(getCategories());
     }
 
     public Programme() {
@@ -271,6 +417,12 @@ public class Programme implements Serializable, Parcelable {
         desc = in.readString();
         starRating = in.readString();
         csaRating = in.readString();
+        in.readStringList(getDirectors());
+        in.readStringList(getActors());
+        in.readStringList(getWriters());
+        in.readStringList(getPresenters());
+        date = in.readString();
+        in.readStringList(getCategories());
     }
 
     public static final Creator<Programme> CREATOR = new Creator<Programme>() {
