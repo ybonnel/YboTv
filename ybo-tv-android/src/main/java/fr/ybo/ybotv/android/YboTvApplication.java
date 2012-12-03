@@ -73,6 +73,18 @@ public class YboTvApplication extends Application {
 
         private Class<? extends Activity> activity;
 
+        public static SCREEN formString(String value) {
+            if (value == null) {
+                return null;
+            }
+            for (SCREEN oneValue : values()) {
+                if (oneValue.name().equals(value)) {
+                    return oneValue;
+                }
+            }
+            return null;
+        }
+
         private SCREEN(Class<? extends Activity> activity) {
             this.activity = activity;
         }
@@ -84,8 +96,8 @@ public class YboTvApplication extends Application {
 
     public Class<? extends Activity> getDefaultActivity() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String defaultScreen = prefs.getString("YboTv_defaultScreen", SCREEN.NOW.name());
-        return SCREEN.valueOf(defaultScreen).getActivity();
+        SCREEN defaultScreen = SCREEN.formString(prefs.getString("YboTv_defaultScreen", SCREEN.NOW.name()));
+        return defaultScreen == null ? SCREEN.NOW.getActivity() : defaultScreen.getActivity();
     }
 
     private String versionInPref = null;
