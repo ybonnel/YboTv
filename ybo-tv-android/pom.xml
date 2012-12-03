@@ -143,6 +143,12 @@
                     <plugin>
                         <groupId>com.github.github</groupId>
                         <artifactId>downloads-maven-plugin</artifactId>
+                        <configuration>
+                            <includeAttached>false</includeAttached>
+                            <includes>
+                                <include>**/${project.artifactId}-${project.version}-signed-aligned.apk</include>
+                            </includes>
+                        </configuration>
                         <executions>
                             <execution>
                                 <goals>
