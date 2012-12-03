@@ -1,0 +1,5 @@
+Projet YboTv :
+ - Un programme télé simple et efficace.
+ - Composé de :
+   * ybo-tv-server : partie serveur du projet avec une partie web.
+   * ybo-tv-android : client android.
