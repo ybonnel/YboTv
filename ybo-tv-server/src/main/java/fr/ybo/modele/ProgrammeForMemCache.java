@@ -23,6 +23,10 @@ public class ProgrammeForMemCache implements Serializable {
     private Map<String, String> ratings;
     private String episodeNum;
     private String starRating;
+    private List<String> directors;
+    private List<String> actors;
+    private List<String> writers;
+    private List<String> presenters;
 
     @JsonProperty("id")
     public String getId() {
@@ -125,6 +129,34 @@ public class ProgrammeForMemCache implements Serializable {
         this.starRating = starRating;
     }
 
+    public List<String> getDirectors() {
+        if (directors == null) {
+            directors = new ArrayList<String>();
+        }
+        return directors;
+    }
+
+    public List<String> getActors() {
+        if (actors == null) {
+            actors = new ArrayList<String>();
+        }
+        return actors;
+    }
+
+    public List<String> getWriters() {
+        if (writers == null) {
+            writers = new ArrayList<String>();
+        }
+        return writers;
+    }
+
+    public List<String> getPresenters() {
+        if (presenters == null) {
+            presenters = new ArrayList<String>();
+        }
+        return presenters;
+    }
+
     public static ProgrammeForMemCache fromProgramme(Programme programme) {
         ProgrammeForMemCache programmeForMemCache = new ProgrammeForMemCache();
         programmeForMemCache.setCategories(new ArrayList<String>(programme.getCategories()));
@@ -139,6 +171,12 @@ public class ProgrammeForMemCache implements Serializable {
         programmeForMemCache.setStop(programme.getStop());
         programmeForMemCache.setSubTitle(programme.getOneSubTitle());
         programmeForMemCache.setTitle(programme.getOneTitle());
+        if (programme.getCredits() != null) {
+            programmeForMemCache.getDirectors().addAll(programme.getCredits().getDirectors());
+            programmeForMemCache.getActors().addAll(programme.getCredits().getActors());
+            programmeForMemCache.getWriters().addAll(programme.getCredits().getWriters());
+            programmeForMemCache.getPresenters().addAll(programme.getCredits().getPresenters());
+        }
         return programmeForMemCache;
     }
 }
