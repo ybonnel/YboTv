@@ -119,9 +119,20 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.1</version>
                     <configuration>
-                        <preparationGoals>android:manifest-update</preparationGoals>
+                        <preparationGoals>android:manifest-update scm:checkin</preparationGoals>
                         <autoVersionSubmodules>true</autoVersionSubmodules>
                         <goals>install -f ybo-tv-android/pom.xml -Pandroid-release</goals>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-scm-plugin</artifactId>
+                    <version>1.8.1</version>
+                    <configuration>
+                        <includes>
+                            <basedir>${project.basedir}</basedir>
+                            <include>AndroidManifest.xml</include>
+                            <message>Change AndroidManifest.xml for ${project.version}</message>
+                        </includes>
                     </configuration>
                 </plugin>
                 <plugin>
