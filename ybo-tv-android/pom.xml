@@ -128,9 +128,9 @@
                     <artifactId>maven-scm-plugin</artifactId>
                     <version>1.8.1</version>
                     <configuration>
-                        <basedir>${project.basedir}</basedir>
+                        <basedir>${project.basedir}/..</basedir>
                         <message>Change AndroidManifest.xml for ${project.version}</message>
-                        <includes>AndroidManifest.xml</includes>
+                        <includes>**/AndroidManifest.xml</includes>
                     </configuration>
                 </plugin>
                 <plugin>
