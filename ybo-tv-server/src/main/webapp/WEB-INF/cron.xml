@@ -1,7 +1,0 @@
-<?xml version="1.0" ?>
-<cronentries>
-  <cron>
-    <url>/cron/update</url>
-    <schedule>every 5 minutes</schedule>
-  </cron>
-</cronentries>
