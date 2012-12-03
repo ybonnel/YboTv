@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import fr.ybo.ybotv.android.activity.CeSoirActivity;
@@ -19,6 +20,8 @@ import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 @ReportsCrashes(formKey = "dDBLNm5ZR2dLWFhyQTV0dDMtTDdFZVE6MQ")
 public class YboTvApplication extends Application {
@@ -26,11 +29,24 @@ public class YboTvApplication extends Application {
 
     public static final String TAG = "YboTv";
 
+    private final static Set<String> EMULATORS_PRDODUCT = new HashSet<String>(){{
+        add("full_x86");
+        add("google_sdk");
+        add("sdk");
+    }};
+
     private YboTvDatabase database;
+
+    public static boolean isEmulator() {
+        Log.d(YboTvApplication.TAG, "BuildProduct : " + Build.PRODUCT);
+        return EMULATORS_PRDODUCT.contains(Build.PRODUCT);
+    }
 
     @Override
     public void onCreate() {
-        ACRA.init(this);
+        if (!isEmulator()) {
+            ACRA.init(this);
+        }
         super.onCreate();
         database = new YboTvDatabase(this);
         /*StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
