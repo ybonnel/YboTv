@@ -1,5 +1,6 @@
 package fr.ybo.services;
 
+import com.google.appengine.api.memcache.Expiration;
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.common.base.Predicate;
@@ -14,6 +15,7 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class ProgrammeService extends DataService<ProgrammeForMemCache> {
 
@@ -43,7 +45,7 @@ public class ProgrammeService extends DataService<ProgrammeForMemCache> {
                 }
             }
             if (programme != null) {
-                service.put(idMemCache, programme);
+                service.put(idMemCache, programme, Expiration.byDeltaMillis((int) TimeUnit.DAYS.toMillis(2)));
             }
         }
         return programme;
@@ -61,7 +63,7 @@ public class ProgrammeService extends DataService<ProgrammeForMemCache> {
                     programmes.add(programme);
                 }
             }
-            service.put(memCacheId, programmes);
+            service.put(memCacheId, programmes, Expiration.byDeltaMillis((int) TimeUnit.DAYS.toMillis(2)));
         }
         return programmes;
     }

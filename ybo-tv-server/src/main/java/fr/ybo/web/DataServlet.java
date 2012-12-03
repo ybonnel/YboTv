@@ -2,6 +2,7 @@ package fr.ybo.web;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.appengine.api.memcache.Expiration;
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.common.base.Splitter;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class DataServlet extends HttpServlet {
 
@@ -59,7 +61,7 @@ public class DataServlet extends HttpServlet {
                 jsonResponse = mapper.writeValueAsString(result);
                 // On ne met en cache la réponse que si elle fait moins de 500Ko.
                 if (jsonResponse.length() < 500000) {
-                    cacheService.put(memCacheId, jsonResponse);
+                    cacheService.put(memCacheId, jsonResponse, Expiration.byDeltaMillis((int) TimeUnit.DAYS.toMillis(2)));
                 }
             }
             resp.getWriter().print(jsonResponse);

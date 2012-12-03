@@ -1,5 +1,6 @@
 package fr.ybo.util;
 
+import com.google.appengine.api.memcache.Expiration;
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import fr.ybo.modele.ChannelForMemCache;
@@ -13,6 +14,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 public class GetTv {
@@ -53,7 +55,7 @@ public class GetTv {
 
         tv = TvForMemCache.fromTv((Tv) um.unmarshal(GetZip.getFile()));
 
-        service.put(currentDate + "_channels", tv.getChannel());
+        service.put(currentDate + "_channels", tv.getChannel(), Expiration.byDeltaMillis((int) TimeUnit.DAYS.toMillis(2)));
         Map<String, List<ProgrammeForMemCache>> mapProgrammes = new HashMap<String, List<ProgrammeForMemCache>>();
         for (ProgrammeForMemCache programme : tv.getProgramme()) {
             if (!mapProgrammes.containsKey(programme.getChannel())) {
@@ -63,7 +65,7 @@ public class GetTv {
         }
 
         for (Map.Entry<String, List<ProgrammeForMemCache>> entry : mapProgrammes.entrySet()) {
-            service.put(currentDate + "_programmes_" + entry.getKey(), entry.getValue());
+            service.put(currentDate + "_programmes_" + entry.getKey(), entry.getValue(), Expiration.byDeltaMillis((int) TimeUnit.DAYS.toMillis(2)));
         }
         return tv;
     }
