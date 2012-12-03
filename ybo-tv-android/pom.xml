@@ -131,7 +131,7 @@
                         <basedir>${project.basedir}/..</basedir>
                         <message>Change AndroidManifest.xml for ${project.version}</message>
                         <includes>AndroidManifest.xml</includes>
-                        <excludes>pom.xml</excludes>
+                        <excludes>**/pom.xml</excludes>
                     </configuration>
                 </plugin>
                 <plugin>
