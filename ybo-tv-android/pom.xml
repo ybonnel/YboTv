@@ -105,7 +105,7 @@
                     <version>2.1</version>
                     <configuration>
                         <autoVersionSubmodules>true</autoVersionSubmodules>
-                        <goals>install -f ybo-tv-android/pom.xml -Pandroid:release</goals>
+                        <goals>install -f ybo-tv-android/pom.xml -Pandroid-release</goals>
                     </configuration>
                 </plugin>
                 <plugin>
