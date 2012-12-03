@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="130" android:versionName="1.3.0-SNAPSHOT" package="fr.ybo.ybotv.android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="130" android:versionName="1.3.0" package="fr.ybo.ybotv.android">
 
     <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="16"/>
 
