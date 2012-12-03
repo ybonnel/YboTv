@@ -8,7 +8,7 @@ import fr.ybo.ybotv.android.service.YboTvService;
 import java.io.Serializable;
 
 @Entity
-public class Channel implements Serializable {
+public class Channel implements Serializable, Comparable<Channel> {
 
     @Column
     @PrimaryKey
@@ -55,5 +55,13 @@ public class Channel implements Serializable {
                 ", displayName='" + displayName + '\'' +
                 ", icon='" + icon + '\'' +
                 '}';
+    }
+
+
+    @Override
+    public int compareTo(Channel other) {
+        int id1 = Integer.parseInt(getId());
+        int id2 = Integer.parseInt(other.getId());
+        return (id1 == id2) ? 0 : (id1 < id2) ? -1 : 1;
     }
 }

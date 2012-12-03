@@ -10,6 +10,7 @@ import fr.ybo.ybotv.android.R;
 import fr.ybo.ybotv.android.database.YboTvDatabase;
 import fr.ybo.ybotv.android.exception.YboTvErreurReseau;
 import fr.ybo.ybotv.android.modele.Channel;
+import fr.ybo.ybotv.android.modele.FavoriteChannel;
 import fr.ybo.ybotv.android.modele.LastUpdate;
 import fr.ybo.ybotv.android.modele.Programme;
 import fr.ybo.ybotv.android.service.YboTvService;
@@ -23,6 +24,28 @@ public class UpdateProgrammes extends TacheAvecGestionErreurReseau {
     private ProgressBar loadingBar;
     private TextView messageLoading;
     private YboTvDatabase database;
+
+    private final static Set<String> defaultFavoriteChannels = new HashSet<String>(){{
+        add("1");
+        add("2");
+        add("3");
+        add("4");
+        add("5");
+        add("6");
+        add("7");
+        add("8");
+        add("9");
+        add("10");
+        add("11");
+        add("12");
+        add("13");
+        add("14");
+        add("15");
+        add("16");
+        add("17");
+        add("18");
+        add("999");
+    }};
 
     public UpdateProgrammes(Context context, Handler handler, final ProgressBar loadingBar, final TextView messageLoading, YboTvDatabase database) {
         super(context);
@@ -48,14 +71,35 @@ public class UpdateProgrammes extends TacheAvecGestionErreurReseau {
             });
         }
 
+
+        List<FavoriteChannel> favoriteChannels = database.selectAll(FavoriteChannel.class);
+
+        if (favoriteChannels.isEmpty()) {
+            for (String defaultChannelId : defaultFavoriteChannels) {
+                FavoriteChannel favoriteChannel = new FavoriteChannel();
+                favoriteChannel.setChannel(defaultChannelId);
+                database.insert(favoriteChannel);
+                favoriteChannels.add(favoriteChannel);
+            }
+        }
+
+        Set<String> favoriteChannelIds = new HashSet<String>(favoriteChannels.size());
+        for (FavoriteChannel favoriteChannel : favoriteChannels) {
+            favoriteChannelIds.add(favoriteChannel.getChannel());
+        }
+
         Set<String> programeIds = new HashSet<String>();
 
         List<Programme> programmesToInsert = new ArrayList<Programme>();
 
         int count = 0;
-        int nbChaines = channels.size();
+        int nbChaines = favoriteChannelIds.size();
 
         for (Channel channel : channels) {
+
+            if (!favoriteChannelIds.contains(channel.getId())) {
+                continue;
+            }
 
             for (Programme programme : YboTvService.getInstance().getProgrammes(channel)) {
 

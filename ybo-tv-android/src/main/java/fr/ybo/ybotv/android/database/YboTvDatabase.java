@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import fr.ybo.database.DataBaseException;
 import fr.ybo.database.DataBaseHelper;
 import fr.ybo.ybotv.android.modele.Channel;
+import fr.ybo.ybotv.android.modele.FavoriteChannel;
 import fr.ybo.ybotv.android.modele.LastUpdate;
 import fr.ybo.ybotv.android.modele.Programme;
 
@@ -19,6 +20,7 @@ public class YboTvDatabase extends DataBaseHelper {
         add(Channel.class);
         add(Programme.class);
         add(LastUpdate.class);
+        add(FavoriteChannel.class);
     }};
 
     private static final String DB_NAME = "YBO_TV";

@@ -57,9 +57,10 @@ public class ChannelWithProgramme {
         sqlQuery.append("Programme.date as programmeDate, ");
         sqlQuery.append("Programme.categories as programmeCategories ");
 
-        sqlQuery.append("FROM Channel, Programme ");
+        sqlQuery.append("FROM Channel, Programme, FavoriteChannel ");
         sqlQuery.append("WHERE ");
         sqlQuery.append("Channel.id = Programme.channel ");
+        sqlQuery.append("AND Channel.id = FavoriteChannel.channel ");
         sqlQuery.append("AND Programme.start <= :currentDate ");
         sqlQuery.append("AND Programme.stop >= :currentDate ");
 

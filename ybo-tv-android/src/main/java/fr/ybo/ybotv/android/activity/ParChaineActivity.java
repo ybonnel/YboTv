@@ -15,11 +15,13 @@ import fr.ybo.ybotv.android.YboTvApplication;
 import fr.ybo.ybotv.android.adapter.CeSoirViewFlowAdapter;
 import fr.ybo.ybotv.android.adapter.ParChaineViewFlowAdapter;
 import fr.ybo.ybotv.android.modele.Channel;
+import fr.ybo.ybotv.android.modele.FavoriteChannel;
 import fr.ybo.ybotv.android.util.AdMobUtil;
 import org.taptwo.android.widget.TitleFlowIndicator;
 import org.taptwo.android.widget.ViewFlow;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ParChaineActivity extends MenuManager.AbstractSimpleActivity {
@@ -33,7 +35,17 @@ public class ParChaineActivity extends MenuManager.AbstractSimpleActivity {
         setContentView(R.layout.flow);
         createMenu();
 
-        channels = ((YboTvApplication) getApplication()).getDatabase().selectAll(Channel.class);
+        List<FavoriteChannel> favoriteChannels = ((YboTvApplication) getApplication()).getDatabase().selectAll(FavoriteChannel.class);
+
+        channels = new ArrayList<Channel>();
+
+        for (FavoriteChannel favoriteChannel : favoriteChannels) {
+            Channel channelTmp = new Channel();
+            channelTmp.setId(favoriteChannel.getChannel());
+            channels.add(((YboTvApplication) getApplication()).getDatabase().selectSingle(channelTmp));
+        }
+
+        Collections.sort(channels);
 
         viewFlow = (ViewFlow) findViewById(R.id.viewflow);
         ParChaineViewFlowAdapter adapter = new ParChaineViewFlowAdapter(this, channels);
